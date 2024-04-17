@@ -68,9 +68,13 @@ def forward_kinematics(t1, t2, t3, t4, t5, t6) :
 
     #Calculate rotations in radians
 
-    Rx_rad = math.atan2(T06_numeric[2,1], T06_numeric[2,2])
-    Ry_rad = math.atan2(-T06_numeric[2,0], sp.sqrt((T06_numeric[2,1])**2 + (T06_numeric[2,2])**2))
-    Rz_rad = math.atan2(T06_numeric[1,0], T06_numeric[0,0])
+    #Rx_rad = math.atan2(T06_numeric[2,1], T06_numeric[2,2])
+    #Ry_rad = math.atan2(-T06_numeric[2,0], sp.sqrt((T06_numeric[2,1])**2 + (T06_numeric[2,2])**2))
+    #Rz_rad = math.atan2(T06_numeric[1,0], T06_numeric[0,0])
+
+    Ry_rad = math.asin(T06_numeric[0,2])
+    Rz_rad = math.acos(T06_numeric[0,0]/math.sqrt(1-(T06_numeric[0,2])**2))
+    Rx_rad = math.acos(T06_numeric[2,2]/math.sqrt(1-(T06_numeric[0,2])**2))
 
     #Convert to degrees
 
