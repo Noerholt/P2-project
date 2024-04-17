@@ -1,10 +1,10 @@
 import numpy as np
 import math
 import sympy as sp
-#from pymycobot.mycobot import MyCobot
+from pymycobot.mycobot import MyCobot
 
-#from pymycobot import PI_PORT, PI_BAUD
-#import time
+from pymycobot import PI_PORT, PI_BAUD
+import time
 
 # Define symbols
 alpha, a, d, theta = sp.symbols('alpha a d theta')
@@ -33,11 +33,23 @@ T56 = TDH(math.pi/2, 0, 65.5, theta6)
 
 T06 = T01*T12*T23*T34*T45*T56
 
-
 #Forward kinematics function
 #Calculate position and orientation from theta values
 
 def forward_kinematics(t1, t2, t3, t4, t5, t6) :
+
+    """Get end effector coordinates in relation to base
+
+        args: 
+            robot joint values
+                6 angles (deg)
+
+        return: 
+            coords
+                position (mm), rotation (deg)
+                    list [x,y,z,Rx,Ry,Rz]
+    
+    """
 
     theta_values = {theta1: sp.rad(t1),  
                     theta2: sp.rad(t2),  
@@ -48,9 +60,13 @@ def forward_kinematics(t1, t2, t3, t4, t5, t6) :
 
     T06_numeric = T06.subs(theta_values).evalf()
 
+    #Extract position values from T06 matrix
+
     x_pos = T06_numeric[0,3]
     y_pos = T06_numeric[1,3]
     z_pos = T06_numeric[2,3]
+
+    #Calculate rotations in radians
 
     Rx_rad = math.atan2(T06_numeric[2,1], T06_numeric[2,2])
     Ry_rad = math.atan2(-T06_numeric[2,0], sp.sqrt((T06_numeric[2,1])**2 + (T06_numeric[2,2])**2))
@@ -58,13 +74,56 @@ def forward_kinematics(t1, t2, t3, t4, t5, t6) :
 
     #Convert to degrees
 
-    print(math.degrees(sp.asin(T06_numeric[0,2])))
-
     Rx_deg = round(math.degrees(Rx_rad),2)
     Ry_deg = round(math.degrees(Ry_rad),2)
     Rz_deg = round(math.degrees(Rz_rad),2)
 
     return (x_pos, y_pos, z_pos, Rx_deg, Ry_deg, Rz_deg)
 
-print(forward_kinematics(50,50,50,50,50,50))
+print(forward_kinematics(60,60,40,30,100,40))
 
+
+def inverse_kinematics(coords) :
+
+    """Calculate joint values from target coordinates
+
+    Args: 
+        coords: 
+            position (mm), rotation (deg)
+                list [x,y,z,Rx,Ry,Rz]
+
+    return:
+        joint values:
+            6 angles (deg)
+    """
+
+    theta1 = "oh yeah",
+    theta2 = "cmon",
+    theta3 = "wuhu",
+    theta4 = "lets go",
+    theta5 = "wassup",
+    theta6 = "ma boi"
+
+    return ([theta1, theta2, theta3, theta4, theta5, theta6])
+
+
+def p2_send_coords(coords, speed, mode) :
+
+    """Move robot to target coordinates
+
+        args: 
+            coords:
+                position (mm), rotation (deg)
+                list [x,y,z,Rx,Ry,Rz]
+            
+            speed:
+                int(1-100)
+
+            mode: 
+                joint = 0, linear = 1
+    
+    """
+
+    #Use inverse kinematics function to find joint values corresponding to target coordinates
+
+    angles = inverse_kinematics(coords)
