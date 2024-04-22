@@ -28,8 +28,8 @@ T01 = TDH(0, 0, 173.9, theta1)
 T12 = TDH(math.pi/2, 0, 0 , theta2 + math.pi/2)
 T23 = TDH(0, 135, 0, theta3)
 T34 = TDH(0, 120, 88.78, theta4 - math.pi/2)
-T45 = TDH(-math.pi/2, 0, 95, theta5)
-T56 = TDH(math.pi/2, 0, 65.5, theta6)
+T45 = TDH(math.pi/2, 0, 95, theta5)
+T56 = TDH(-math.pi/2, 0, 65.5, theta6)
 
 T06 = T01*T12*T23*T34*T45*T56
 
@@ -72,9 +72,18 @@ def forward_kinematics(t1, t2, t3, t4, t5, t6) :
     #Ry_rad = math.atan2(-T06_numeric[2,0], sp.sqrt((T06_numeric[2,1])**2 + (T06_numeric[2,2])**2))
     #Rz_rad = math.atan2(T06_numeric[1,0], T06_numeric[0,0])
 
-    Ry_rad = math.asin(T06_numeric[0,2])
-    Rz_rad = math.acos(T06_numeric[0,0]/math.sqrt(1-(T06_numeric[0,2])**2))
-    Rx_rad = math.acos(T06_numeric[2,2]/math.sqrt(1-(T06_numeric[0,2])**2))
+    def safe_acos(value):
+        return math.acos(max(-1, min(1, value)))
+
+    def safe_asin(value):
+        return math.asin(max(-1, min(1, value)))
+
+    def safe_sqrt(value):
+        return math.sqrt(max(0, value))
+
+    Ry_rad = safe_asin(T06_numeric[0,2])
+    Rz_rad = safe_acos(T06_numeric[0,0]/safe_sqrt(1-(T06_numeric[0,2])**2))
+    Rx_rad = safe_acos(T06_numeric[2,2]/safe_sqrt(1-(T06_numeric[0,2])**2))
 
     #Convert to degrees
 
@@ -84,7 +93,7 @@ def forward_kinematics(t1, t2, t3, t4, t5, t6) :
 
     return (x_pos, y_pos, z_pos, Rx_deg, Ry_deg, Rz_deg)
 
-print(forward_kinematics(60,60,40,30,100,40))
+print(forward_kinematics(-160,-60,70,30,-40,90))
 
 
 def inverse_kinematics(coords) :
@@ -124,9 +133,13 @@ def p2_send_coords(coords, speed, mode) :
                 int(1-100)
 
             mode: 
-                joint = 0, linear = 1
+                moveJ = 0, moveL = 1
     
     """
+
+    #Use inverse kinematics function to find joint values corresponding to target coordinates
+
+    angles = inverse_kinematics(coords)
 
     #Use inverse kinematics function to find joint values corresponding to target coordinates
 
