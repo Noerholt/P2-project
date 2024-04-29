@@ -17,7 +17,7 @@ class Tank:
         set = 0 # none important variable: delete it
 
 class WaterTank(Tank):
-    WaterLevelAboveFilter: int = 0
+    waterLevelAboveFilter: int = 0
 
     def GetFilterEfficiency(self):
         return
