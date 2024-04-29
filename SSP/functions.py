@@ -22,4 +22,3 @@ def waterTankControl():
         wInputClose() #command which closes the water input for the watertank
         
         
-#TEST
