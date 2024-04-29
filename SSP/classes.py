@@ -2,7 +2,7 @@ class Tank:
     def __init__(self) -> None:
         
         self.capacityMax: int = 0 # int
-        self.cluidLevel: int = 0 # int
+        self.fluidLevel: int = 0 # int
         self.status: bool = 0 # filling and emptying
 
     def GetFluidAmount(self) -> int:
