@@ -1,8 +1,9 @@
-stationSoapTank = SoapTank()
-stationWaterTank = Water_Tank()
-sleanerMopTank = Tank()
-sasteMopTank = Tank()
+import classes
 
+stationSoapTank = classes.SoapTank()
+stationWaterTank = classes.WaterTank()
+sleanerMopTank = classes.Tank()
+sasteMopTank = classes.Tank()
 
 humidity=80 #relativ luftfugtighed fra 0-100%
 deHumOn=False #status for if dehumidifier is turned on
