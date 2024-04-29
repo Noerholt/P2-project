@@ -7,7 +7,7 @@ sasteMopTank = classes.Tank()
 
 dehumidifier=classe.DeHumidifier()
 
-humidity=80 #relativ luftfugtighed fra 0-100%
+humidity=80 #relative himidity from 0-100%
 filterRate=20 #the rate which the filter lets water through
 
 def deHumControl(humidity):
@@ -19,7 +19,7 @@ def deHumControl(humidity):
 def waterTankControl():
     
     if stationWaterTank.FluidLevel>=95:
-        wInputClose()
+        wInputClose() #command which closes the water input for the watertank
         
         
         
