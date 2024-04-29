@@ -29,7 +29,7 @@ class SoapTank(Tank):
         return
 
 class DeHumidifier:
-    print
+    deHumOn = False
 
 class Navigation:
     LocationX: int = 0
