@@ -1,17 +1,15 @@
 class Tank:
     def __init__(self) -> None:
         self.capacityMax: int = 0 # int
-        self.fluidLevel: int = 0 # int
-        self.status: bool = 0 # filling and emptying
+        self.fluidLevel: float = 0 # float in units of m
+        self.status: bool = 0 # filling or emptying
 
     def GetFluidAmount(self) -> int:
-        return
+        return 
     
-    def UpdateFluidLevel(self) -> int:
-        return
-    
-    def GetStatus(self) -> bool:
-        return
+    def UpdateFluidLevel(self,SensorReading) -> int:
+        #SensorReading in units of Pa
+        self.fluidLevel = SensorReading/(997*9.816)
     
     def SetStatus(self, Filling: bool, Emptying: bool) -> None:
         set = 0 # none important variable: delete it
