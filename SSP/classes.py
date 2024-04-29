@@ -23,7 +23,7 @@ class WaterTank(Tank):
         return
     
 class SoapTank(Tank):
-    open_close: bool = False
+    openClose: bool = False
 
     def SetHatchState(self, state: bool):
         return
