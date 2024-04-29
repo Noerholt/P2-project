@@ -47,5 +47,3 @@ StationSoapTank = SoapTank()
 StationWaterTank = Water_Tank()
 CleanerMopTank = Tank()
 WasteMopTank = Tank()
-
-
