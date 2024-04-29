@@ -12,9 +12,9 @@ filterRate=20 #the rate which the filter lets water through
 
 def deHumControl(humidity):
     if humidity<30 or stationWaterTank.FluidLevel>=80:
-        deHumOn=False
+        deHumOn.dehumidifier=False
     else:
-        deHumOn=True
+        deHumOn.dehumidifier=True
 
 def waterTankControl():
     
