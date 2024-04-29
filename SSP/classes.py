@@ -43,7 +43,7 @@ class Mop:
 class User:
     name = "Tom"
 
-StationSoapTank = SoapTank()
-StationWaterTank = Water_Tank()
-CleanerMopTank = Tank()
-WasteMopTank = Tank()
+stationSoapTank = SoapTank()
+stationWaterTank = WaterTank()
+cleanerMopTank = Tank()
+wasteMopTank = Tank()
