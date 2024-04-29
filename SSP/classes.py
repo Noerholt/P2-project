@@ -29,7 +29,7 @@ class SoapTank(Tank):
         return
 
 class DeHumidifier:
-    deHumOn = False
+    deHumOn: bool = False #is dehumidifier turned on?
 
 class Navigation:
     LocationX: int = 0
