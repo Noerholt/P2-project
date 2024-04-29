@@ -2,8 +2,8 @@ import classes
 
 stationSoapTank = classes.SoapTank()
 stationWaterTank = classes.WaterTank()
-sleanerMopTank = classes.Tank()
-sasteMopTank = classes.Tank()
+cleanerMopTank = classes.Tank()
+wasteMopTank = classes.Tank()
 
 dehumidifier=classe.DeHumidifier()
 
