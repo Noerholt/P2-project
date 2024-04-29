@@ -1,9 +1,9 @@
 class Tank:
     def __init__(self) -> None:
         
-        self.CapacityMax: int = 0 # int
-        self.FluidLevel: int = 0 # int
-        self.Status: bool = [] # filling and emptying
+        self.capacityMax: int = 0 # int
+        self.cluidLevel: int = 0 # int
+        self.status: bool = 0 # filling and emptying
 
     def GetFluidAmount(self) -> int:
         return
@@ -17,7 +17,7 @@ class Tank:
     def SetStatus(self, Filling: bool, Emptying: bool) -> None:
         set = 0 # none important variable: delete it
 
-class Water_Tank(Tank):
+class WaterTank(Tank):
     WaterLevelAboveFilter: int = 0
 
     def GetFilterEfficiency(self):
@@ -29,7 +29,7 @@ class SoapTank(Tank):
     def SetHatchState(self, state: bool):
         return
 
-class DeHymidifier:
+class DeHumidifier:
     print
 
 class Navigation:
