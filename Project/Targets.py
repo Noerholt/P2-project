@@ -3,22 +3,28 @@
 #Check existing targets to avoid duplicates
 
 
-class target:
+class targets:
 
     """Define targets
 
         properties:
-            position (mm)
-                list [x,y,z]
-
-            orientation (deg)
-                list [Rx,Ry,Rz]
+            position and orientation (mm, deg)
+                list [x,y,z,Rx,Ry,Rz]
             
     """
 
-    def __init__(self,position,orientation):
+    def __init__(self,coords):
 
-        self.position = position
-        self.orientation = orientation
+        self.coords = coords
 
-home = target([0,0,0],[0,0,0])
+home = targets([0,0,0,0,0,0])
+
+class pillDivider(targets):
+    def __init__(self,coords,timeOfDay):
+        super().__init__(coords)
+
+        self.timeOfDay = timeOfDay
+
+pillDividerMorning = pillDivider([1,1,1,1,1,1],"morning")
+
+print(pillDividerMorning.timeOfDay)

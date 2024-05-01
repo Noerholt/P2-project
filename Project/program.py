@@ -1,6 +1,4 @@
-import numpy as np
 import math
-import sympy as sp
 from pymycobot.mycobot import MyCobot
 
 from pymycobot import PI_PORT, PI_BAUD
