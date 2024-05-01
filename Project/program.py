@@ -3,14 +3,35 @@ from pymycobot.mycobot import MyCobot
 
 from pymycobot import PI_PORT, PI_BAUD
 import time
-#import targets
+import Targets
 
-#sync.send_coords(home)
+
+
+
+mc = MyCobot("COM17")
+mc.send_angles([37, 0, 0, 0, 0 ,0], speed=50)
+time.sleep(5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 dagPeriode = ["morgen", "middag", "aften"]
 t = -1
 
 FullList =[["A","A","B","A"],["B","A","B"]]
+
+#sync.send_coords(home)
 
 for sublist in FullList:
     t = t+1
