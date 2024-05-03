@@ -14,6 +14,7 @@ robot = RL.Item('MyCoBot_320')
 home = RL.Item('home')
 pillA = RL.Item('pill A')
 pillAapp = RL.Item('pill A app')
+viapointA = RL.Item('viapoint A')
 pillB = RL.Item('pill B')
 pillBapp = RL.Item('pill B app')
 
@@ -39,10 +40,10 @@ def runProgram(patientList):
         pillAmountA = sublist.count("A")
         pillAmountB = sublist.count("B") 
 
+        robot.MoveJ(home)
+
         for x in range(pillAmountA):
             print("Picking up pill A")
-
-            robot.MoveJ(home)
 
             robot.MoveJ(pillAapp)
             robot.MoveL(pillA)
@@ -51,7 +52,9 @@ def runProgram(patientList):
 
             robot.MoveL(pillAapp)
 
-            robot.MoveL([-101.452766, 45.373501, 124.787755, -80.161256, -90.000000, 168.547234])
+            robot.MoveL(viapointA)
+
+            robot.MoveC([20.800799, -29.525669, -113.499697, 53.025366, 90.000000, 110.800799],[-101.452766, 45.373501, 124.787755, -80.161256, -90.000000, 168.547234])
 
             #sync.send_coords(approachPillA, 25, 0)
             #sync.send_coords(pickPillA, 15, 1)
@@ -69,6 +72,15 @@ def runProgram(patientList):
         for x in range (pillAmountB):
             print("Picking up pill B")
 
+            robot.MoveJ(pillBapp)
+            robot.MoveL(pillB)
+
+            #attach pill
+
+            robot.MoveL(pillBapp)
+
+            robot.MoveJ([-109.371086, 45.023769, 126.933930, -81.957699, -90.000000, 160.628914])
+
             #sync.send_coords(approachPillB, 25, 0)
             #sync.send_coords(pickPillB, 15, 1)
 
@@ -81,3 +93,5 @@ def runProgram(patientList):
             #gripperCommand(drop)
 
             #sync.send_coords(approachPillContainer[t], 15, 1)
+
+runProgram(["A","A","A"])
