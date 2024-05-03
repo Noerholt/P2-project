@@ -3,7 +3,7 @@ from pymycobot.mycobot import MyCobot
 
 from pymycobot import PI_PORT, PI_BAUD
 import time
-from Project import Targets
+import Targets
 
 dagPeriode = ["morgen", "middag", "aften"]
 
