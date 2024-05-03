@@ -3,16 +3,17 @@ from pymycobot.mycobot import MyCobot
 
 from pymycobot import PI_PORT, PI_BAUD
 import time
-import Targets
+from Project import Targets
 
 dagPeriode = ["morgen", "middag", "aften"]
-t = -1
 
 FullList =[["A","A","B","A"],["B","A","B"]]
 
 #sync.send_coords(home)
 
 def runProgram(pillList):
+
+    t = -1
 
     for sublist in pillList:
         t = t+1
