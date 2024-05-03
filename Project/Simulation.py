@@ -15,8 +15,10 @@ home = RL.Item('home')
 pillA = RL.Item('pill A')
 pillAapp = RL.Item('pill A app')
 viapointA = RL.Item('viapoint A')
+viapointA2 = RL.Item('viapoint A2')
 pillB = RL.Item('pill B')
 pillBapp = RL.Item('pill B app')
+box_start = RL.Item('daybox')
 
 #program.runProgram([["B","A"],["A","A","B"]])
 
@@ -52,9 +54,11 @@ def runProgram(patientList):
 
             robot.MoveL(pillAapp)
 
-            robot.MoveL(viapointA)
+            #robot.MoveL(viapointA)
 
-            robot.MoveC([20.800799, -29.525669, -113.499697, 53.025366, 90.000000, 110.800799],[-101.452766, 45.373501, 124.787755, -80.161256, -90.000000, 168.547234])
+            robot.MoveC(viapointA, viapointA2)
+
+            robot.MoveC(viapointA2, box_start)
 
             #sync.send_coords(approachPillA, 25, 0)
             #sync.send_coords(pickPillA, 15, 1)
