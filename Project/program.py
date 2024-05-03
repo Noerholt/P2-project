@@ -3,19 +3,24 @@ from pymycobot.mycobot import MyCobot
 
 from pymycobot import PI_PORT, PI_BAUD
 import time
-from Project import Targets
+import Targets
 
-dagPeriode = ["morgen", "middag", "aften"]
+#mc = MyCobot("COM17", 115200)
+
+dagPeriode = ["morgen", "middag", "aften", "nat"]
 
 FullList =[["A","A","B","A"],["B","A","B"]]
 
 #sync.send_coords(home)
 
-def runProgram(pillList):
+#mc.send_angles([0,0,0,0,0,0],20)
+#print(mc.get_angles())
+
+def runProgram(patientList):
 
     t = -1
 
-    for sublist in pillList:
+    for sublist in patientList:
         t = t+1
         print(dagPeriode[t])
 

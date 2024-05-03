@@ -11,19 +11,91 @@ RL = Robolink()
 robot = RL.Item('MyCoBot_320')
  
 # get the home target and the welding targets:
-home = RL.Item('Target 1')
-target = RL.Item('Target 2')
-# get the pose of the target (4x4 matrix):
-poseref = target.Pose()
+home = RL.Item('home')
+pillA = RL.Item('pill A')
+pillAapp = RL.Item('pill A app')
+viapointA = RL.Item('viapoint A')
+viapointA2 = RL.Item('viapoint A2')
+pillB = RL.Item('pill B')
+pillBapp = RL.Item('pill B app')
+box_start = RL.Item('daybox')
 
-program.runProgram([["B","A"],["A","A","B"]])
+#program.runProgram([["B","A"],["A","A","B"]])
 
-# move the robot to home, then to the center:
-robot.MoveJ(home)
-robot.MoveJ(target)
-x = 1
+dagPeriode = ["morgen", "middag", "aften", "nat"]
 
-if x == 1:
-    robot.MoveJ(home)
-    robot.MoveJ(target)
-    print("Final destination!")
+FullList =[["A","A","B","A"],["B","A","B"]]
+
+#sync.send_coords(home)
+
+def runProgram(patientList):
+
+    t = -1
+
+    box_x = -30
+
+    for sublist in patientList:
+        t = t+1
+        box_x = box_x + 30
+        print(dagPeriode[t])
+
+        pillAmountA = sublist.count("A")
+        pillAmountB = sublist.count("B") 
+
+        robot.MoveJ(home)
+
+        for x in range(pillAmountA):
+            print("Picking up pill A")
+
+            robot.MoveJ(pillAapp)
+            robot.MoveL(pillA)
+
+            #attach pill
+
+            robot.MoveL(pillAapp)
+
+            #robot.MoveL(viapointA)
+
+            robot.MoveC(viapointA, viapointA2)
+
+            robot.MoveC(viapointA2, box_start)
+
+            #sync.send_coords(approachPillA, 25, 0)
+            #sync.send_coords(pickPillA, 15, 1)
+
+            #gripperCommand(pick)
+
+            #sync.send_coords(approachPillA, 25, 0)
+            #sync.send_coords(approachPillContainer[t], 25, 0)
+            #sync.send_coords(dropPillContainter[t], 15, 1)
+
+            #gripperCommand(drop)
+
+            #sync.send_coords(approachPillContainer[t], 15, 1)
+
+        for x in range (pillAmountB):
+            print("Picking up pill B")
+
+            robot.MoveJ(pillBapp)
+            robot.MoveL(pillB)
+
+            #attach pill
+
+            robot.MoveL(pillBapp)
+
+            robot.MoveJ([-109.371086, 45.023769, 126.933930, -81.957699, -90.000000, 160.628914])
+
+            #sync.send_coords(approachPillB, 25, 0)
+            #sync.send_coords(pickPillB, 15, 1)
+
+            #gripperCommand(pick)
+
+            #sync.send_coords(approachPillB, 25, 0)
+            #sync.send_coords(approachPillContainer[t], 25, 0)
+            #sync.send_coords(dropPillContainter[t], 15, 1)
+
+            #gripperCommand(drop)
+
+            #sync.send_coords(approachPillContainer[t], 15, 1)
+
+runProgram(["A","A","A"])
