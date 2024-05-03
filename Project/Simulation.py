@@ -16,21 +16,68 @@ pillA = RL.Item('pill A')
 pillAapp = RL.Item('pill A app')
 pillB = RL.Item('pill B')
 pillBapp = RL.Item('pill B app')
-# get the pose of the target (4x4 matrix):
 
 #program.runProgram([["B","A"],["A","A","B"]])
 
-# move the robot to home, then to the center:
-robot.MoveJ(home)
-robot.MoveJ(pillAapp)
-robot.MoveL([-48.946770, -65.509573, -96.859159, 72.368732, 90.000000, 41.053230])
+dagPeriode = ["morgen", "middag", "aften", "nat"]
 
-robot.MoveL(pillAapp)
-x = 1
+FullList =[["A","A","B","A"],["B","A","B"]]
 
-if x == 1:
-    robot.MoveJ(home)
-    robot.MoveJ(pillBapp)
-    robot.MoveL(pillB)
-    robot.MoveL(pillAapp)
-    print("Final destination!")
+#sync.send_coords(home)
+
+def runProgram(patientList):
+
+    t = -1
+
+    box_x = -30
+
+    for sublist in patientList:
+        t = t+1
+        box_x = box_x + 30
+        print(dagPeriode[t])
+
+        pillAmountA = sublist.count("A")
+        pillAmountB = sublist.count("B") 
+
+        for x in range(pillAmountA):
+            print("Picking up pill A")
+
+            robot.MoveJ(home)
+
+            robot.MoveJ(pillAapp)
+            robot.MoveL(pillA)
+
+            #attach pill
+
+            robot.MoveL(pillAapp)
+
+            robot.MoveL([-101.452766, 45.373501, 124.787755, -80.161256, -90.000000, 168.547234])
+
+            #sync.send_coords(approachPillA, 25, 0)
+            #sync.send_coords(pickPillA, 15, 1)
+
+            #gripperCommand(pick)
+
+            #sync.send_coords(approachPillA, 25, 0)
+            #sync.send_coords(approachPillContainer[t], 25, 0)
+            #sync.send_coords(dropPillContainter[t], 15, 1)
+
+            #gripperCommand(drop)
+
+            #sync.send_coords(approachPillContainer[t], 15, 1)
+
+        for x in range (pillAmountB):
+            print("Picking up pill B")
+
+            #sync.send_coords(approachPillB, 25, 0)
+            #sync.send_coords(pickPillB, 15, 1)
+
+            #gripperCommand(pick)
+
+            #sync.send_coords(approachPillB, 25, 0)
+            #sync.send_coords(approachPillContainer[t], 25, 0)
+            #sync.send_coords(dropPillContainter[t], 15, 1)
+
+            #gripperCommand(drop)
+
+            #sync.send_coords(approachPillContainer[t], 15, 1)
