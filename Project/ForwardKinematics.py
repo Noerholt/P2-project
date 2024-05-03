@@ -58,8 +58,6 @@ def forward_kinematics(t1, t2, t3, t4, t5, t6) :
     #Use T06_nu
     T06_numeric = T06.subs(theta_values).evalf()
 
-    print(T06_numeric)
-
     #Extract position values from T06 matrix
 
     x_pos = round(T06_numeric[0,3],2)
@@ -81,7 +79,7 @@ def forward_kinematics(t1, t2, t3, t4, t5, t6) :
 
     return (x_pos, y_pos, z_pos, Rx_deg, Ry_deg, Rz_deg)
 
-print(forward_kinematics(10,10,10,10,10,10))
+print(forward_kinematics(0,0,0,0,0,0))
 
 
 #
