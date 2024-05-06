@@ -9,7 +9,11 @@ RL = Robolink()
  
 # get the robot item:
 robot = RL.Item('MyCoBot_320')
- 
+
+tool = RL.Item('End Effector')
+
+home = RL.Item('home')
+pill = RL.Item('A pill')
 #box A targets:
 pillA_app = RL.Item('pill A app')
 pillA_start = RL.Item('pill A start')
@@ -39,11 +43,10 @@ def runProgram(patientList):
 
     t = -1
 
-    box_x = -30
+    #robot.MoveJ(home)
 
     for sublist in patientList:
         t = t+1
-        box_x = box_x + 30
         print(dagPeriode[t])
 
         pillAmountA = sublist.count("A")
@@ -57,6 +60,8 @@ def runProgram(patientList):
             robot.MoveJ(pillA_app)
             robot.MoveL(pillA_start)
             robot.MoveL(pillA_end)
+
+            tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pill])
             #attach pill
             robot.MoveL(pillA_dep)
 
@@ -64,6 +69,10 @@ def runProgram(patientList):
             robot.MoveL(RL.Item('viapoint'))
 
             robot.MoveL(RL.Item(dagPeriode[t]))
+
+            robot.MoveL(RL.Item('Target 15'))
+
+            tool.DetachAll(RL.Item('MyCobot_320 Base'))
 
             #sync.send_coords(approachPillA, 25, 0)
             #sync.send_coords(pickPillA, 15, 1)
