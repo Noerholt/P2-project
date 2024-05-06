@@ -14,17 +14,18 @@ robot = RL.Item('MyCoBot_320')
 home = RL.Item('home')
 pillA = RL.Item('pill A')
 pillAapp = RL.Item('pill A app')
-viapointA = RL.Item('viapoint A')
-viapointA2 = RL.Item('viapoint A2')
 pillB = RL.Item('pill B')
 pillBapp = RL.Item('pill B app')
-box_start = RL.Item('daybox')
+#boxMorgen = RL.Item('morgen')
+#boxMiddag = RL.Item('middag')
+#boxAften = RL.Item('aften')
+#boxNat = RL.Item('nat')
 
 #program.runProgram([["B","A"],["A","A","B"]])
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
-FullList =[["A","A","B","A"],["B","A","B"]]
+FullList =[["A","A","B","A"],["B","A","B"],["A","B"],["B","A"]]
 
 #sync.send_coords(home)
 
@@ -42,7 +43,7 @@ def runProgram(patientList):
         pillAmountA = sublist.count("A")
         pillAmountB = sublist.count("B") 
 
-        robot.MoveJ(home)
+        #robot.MoveJ(home)
 
         for x in range(pillAmountA):
             print("Picking up pill A")
@@ -54,11 +55,13 @@ def runProgram(patientList):
 
             robot.MoveL(pillAapp)
 
-            #robot.MoveL(viapointA)
+            robot.MoveL(RL.Item('viapoint'))
 
-            robot.MoveC(viapointA, viapointA2)
+            robot.MoveL(RL.Item(dagPeriode[t]))
 
-            robot.MoveC(viapointA2, box_start)
+            #print(robot.Pose())
+
+                        
 
             #sync.send_coords(approachPillA, 25, 0)
             #sync.send_coords(pickPillA, 15, 1)
@@ -83,7 +86,9 @@ def runProgram(patientList):
 
             robot.MoveL(pillBapp)
 
-            robot.MoveJ([-109.371086, 45.023769, 126.933930, -81.957699, -90.000000, 160.628914])
+            robot.MoveL(RL.Item('viapoint'))
+
+            robot.MoveL(RL.Item(dagPeriode[t]))
 
             #sync.send_coords(approachPillB, 25, 0)
             #sync.send_coords(pickPillB, 15, 1)
@@ -98,4 +103,5 @@ def runProgram(patientList):
 
             #sync.send_coords(approachPillContainer[t], 15, 1)
 
-runProgram(["A","A","A"])
+runProgram(FullList)
+
