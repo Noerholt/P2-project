@@ -18,17 +18,14 @@ def CalculateThetaValues(T):
     S = np.array([[v1a,0,0,0,0,0],[v1b,0,0,0,0,0]])
 
     for i in range(np.shape(S)[0]-1,-1,-1):
-        if(165 >= S[i,0]*180/m.pi >= -165):
+        if(175 >= S[i,0]*180/m.pi >= -175):
             continue
-        elif (165 < S[i,0]*180/m.pi):
-            #print("Over 165")
+        elif (175 < S[i,0]*180/m.pi):
             S[i,0] = S[i,0]-2*m.pi
         else:
-            #print("Under -165")
             S[i,0] = S[i,0]+2*m.pi
 
-        if(195 > S[i,0]*180/m.pi > 165 or -195 < S[i,0]*180/m.pi < -165):
-            #print("OOB")
+        if(185 > S[i,0]*180/m.pi > 175 or -185 < S[i,0]*180/m.pi < -175):
             S = np.delete(S, i, axis=0)
     
     #Theta5
@@ -74,22 +71,16 @@ def CalculateThetaValues(T):
 
     #Theta4
     for i in range(np.shape(S)[0]):
-        z5 = [T[0,0]*m.sin(S[i,5])+T[0,1]*m.cos(S[i,5]), T[1,0]*m.sin(S[i,5])+T[1,1]*m.cos(S[i,5]), T[2,0]*m.sin(S[i,5])+T[2,1]*m.cos(S[i,5])]
-        print("%s %s" % ("z5=", z5))
-
         x = m.cos(S[i,1] + S[i,2])*(T[2,1]*m.cos(S[i,5]) + T[2,0]*m.sin(S[i,5])) - m.sin(S[i,1] + S[i,2])*m.cos(S[i,0])*(T[0,1]*m.cos(S[i,5]) + T[0,0]*m.sin(S[i,5])) - m.sin(S[i,1] + S[i,2])*m.sin(S[i,0])*(T[1,1]*m.cos(S[i,5]) + T[1,0]*m.sin(S[i,5]))
-        
         y = - m.sin(S[i,1] + S[i,2])*(T[2,1]*m.cos(S[i,5]) + T[2,0]*m.sin(S[i,5])) - m.cos(S[i,1] + S[i,2])*m.cos(S[i,0])*(T[0,1]*m.cos(S[i,5]) + T[0,0]*m.sin(S[i,5])) - m.cos(S[i,1] + S[i,2])*m.sin(S[i,0])*(T[1,1]*m.cos(S[i,5]) + T[1,0]*m.sin(S[i,5]))
         
-        print("%s %s" % ("x=", x))
-        print("%s %s" % ("y=", y))
         S[i,3] = m.atan2(y,x)
         
     return S
 
-T = TransformDesired(-112.044142,-200.758435,441.219650,110,-50,-10)
+T = TransformDesired(0,-154.28,523.9,90,0,0)
 
-#print(T)
+print(T)
 
 S = CalculateThetaValues(T)
 #S = np.sort(S, axis=0)
