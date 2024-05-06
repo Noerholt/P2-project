@@ -10,12 +10,18 @@ RL = Robolink()
 # get the robot item:
 robot = RL.Item('MyCoBot_320')
  
-# get the home target and the welding targets:
-home = RL.Item('home')
-pillA = RL.Item('pill A')
-pillAapp = RL.Item('pill A app')
-pillB = RL.Item('pill B')
-pillBapp = RL.Item('pill B app')
+#box A targets:
+pillA_app = RL.Item('pill A app')
+pillA_start = RL.Item('pill A start')
+pillA_end = RL.Item('pill A end')
+pillA_dep = RL.Item('pill A dep')
+
+#box B targets:
+pillB_app = RL.Item('pill B app')
+pillB_start = RL.Item('pill B start')
+pillB_end = RL.Item('pill B end')
+pillB_dep = RL.Item('pill B dep')
+
 #boxMorgen = RL.Item('morgen')
 #boxMiddag = RL.Item('middag')
 #boxAften = RL.Item('aften')
@@ -48,20 +54,16 @@ def runProgram(patientList):
         for x in range(pillAmountA):
             print("Picking up pill A")
 
-            robot.MoveJ(pillAapp)
-            robot.MoveL(pillA)
-
+            robot.MoveJ(pillA_app)
+            robot.MoveL(pillA_start)
+            robot.MoveL(pillA_end)
             #attach pill
+            robot.MoveL(pillA_dep)
 
-            robot.MoveL(pillAapp)
 
             robot.MoveL(RL.Item('viapoint'))
 
             robot.MoveL(RL.Item(dagPeriode[t]))
-
-            #print(robot.Pose())
-
-                        
 
             #sync.send_coords(approachPillA, 25, 0)
             #sync.send_coords(pickPillA, 15, 1)
@@ -79,12 +81,11 @@ def runProgram(patientList):
         for x in range (pillAmountB):
             print("Picking up pill B")
 
-            robot.MoveJ(pillBapp)
-            robot.MoveL(pillB)
-
+            robot.MoveJ(pillB_app)
+            robot.MoveL(pillB_start)
+            robot.MoveL(pillB_end)
             #attach pill
-
-            robot.MoveL(pillBapp)
+            robot.MoveL(pillB_dep)
 
             robot.MoveL(RL.Item('viapoint'))
 
