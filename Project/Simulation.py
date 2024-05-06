@@ -5,12 +5,15 @@ import program
  
 # Any interaction with RoboDK must be done through
 # Robolink()
+
 RL = Robolink()
  
 # get the robot item:
 robot = RL.Item('MyCoBot_320')
 
 tool = RL.Item('End Effector')
+
+RL.ShowRoboDK()
 
 home = RL.Item('home')
 pill = RL.Item('A pill')
@@ -25,11 +28,6 @@ pillB_app = RL.Item('pill B app')
 pillB_start = RL.Item('pill B start')
 pillB_end = RL.Item('pill B end')
 pillB_dep = RL.Item('pill B dep')
-
-#boxMorgen = RL.Item('morgen')
-#boxMiddag = RL.Item('middag')
-#boxAften = RL.Item('aften')
-#boxNat = RL.Item('nat')
 
 #program.runProgram([["B","A"],["A","A","B"]])
 
@@ -93,12 +91,16 @@ def runProgram(patientList):
             robot.MoveJ(pillB_app)
             robot.MoveL(pillB_start)
             robot.MoveL(pillB_end)
+
+            tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pill])
             #attach pill
             robot.MoveL(pillB_dep)
 
             robot.MoveL(RL.Item('viapoint'))
 
             robot.MoveL(RL.Item(dagPeriode[t]))
+
+            tool.DetachAll(RL.Item('MyCobot_320 Base'))
 
             #sync.send_coords(approachPillB, 25, 0)
             #sync.send_coords(pickPillB, 15, 1)
