@@ -16,7 +16,8 @@ tool = RL.Item('End Effector')
 RL.ShowRoboDK()
 
 home = RL.Item('home')
-pill = RL.Item('A pill')
+pillA = RL.Item('A pill')
+pillB = RL.Item('B pill')
 #box A targets:
 pillA_app = RL.Item('pill A app')
 pillA_start = RL.Item('pill A start')
@@ -59,18 +60,20 @@ def runProgram(patientList):
             robot.MoveL(pillA_start)
             robot.MoveL(pillA_end)
 
-            tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pill])
+            tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pillA])
             #attach pill
             robot.MoveL(pillA_dep)
 
 
             robot.MoveL(RL.Item('viapoint'))
 
+            robot.MoveL(RL.Item(dagPeriode[t]+" app"))
+
             robot.MoveL(RL.Item(dagPeriode[t]))
 
-            robot.MoveL(RL.Item('Target 15'))
-
             tool.DetachAll(RL.Item('MyCobot_320 Base'))
+
+            robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
             #sync.send_coords(approachPillA, 25, 0)
             #sync.send_coords(pickPillA, 15, 1)
@@ -92,15 +95,19 @@ def runProgram(patientList):
             robot.MoveL(pillB_start)
             robot.MoveL(pillB_end)
 
-            tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pill])
+            tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pillB])
             #attach pill
             robot.MoveL(pillB_dep)
 
             robot.MoveL(RL.Item('viapoint'))
 
+            robot.MoveL(RL.Item(dagPeriode[t]+" app"))
+
             robot.MoveL(RL.Item(dagPeriode[t]))
 
             tool.DetachAll(RL.Item('MyCobot_320 Base'))
+
+            robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
             #sync.send_coords(approachPillB, 25, 0)
             #sync.send_coords(pickPillB, 15, 1)
