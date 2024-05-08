@@ -1,6 +1,7 @@
 import math as m
 import numpy as np
 import os
+import time
 
 np.set_printoptions(suppress=True)
 os.system('cls')
@@ -53,46 +54,39 @@ def CalculateThetaValues(T):
             S[i,2] = m.acos((LPlP4-32625)/32400)
 
         #Theta2
-        va = m.atan((P4[2]-Pl[2])/(m.sqrt((P4[0]-Pl[0])**2+(P4[1]-Pl[1])**2)))
+        xPlP4_0 = (P4[0]-Pl[0])*m.cos(S[i,0])+(P4[1]-Pl[1])*m.sin(S[i,0])
+        zPlP4_0 = P4[2]-Pl[2]
+
+        va = m.atan2(zPlP4_0,xPlP4_0)
         vb = m.acos((3825+LPlP4)/(270*m.sqrt(LPlP4)))
 
-        xPlP4_0 = (P4[1]-Pl[1])*m.sin(S[i,0])+(P4[0]-Pl[0])*m.cos(S[i,0])
-
-        if(xPlP4_0 >= 0):
-            S[i,1] = -m.pi/2 + va - vb
-            S = np.vstack([S, S[i,:]])
-            S[i,2] = -S[i,2]
-            S[i,1] = -m.pi/2 + va + vb
-        else:
-            S[i,1] = m.pi/2 - va - vb
-            S = np.vstack([S, S[i,:]])
-            S[i,2] = -S[i,2]
-            S[i,1] = m.pi/2 - va + vb
+        S[i,1] = va - vb - m.pi/2
+        S = np.vstack([S, S[i,:]])
+        S[i,2] = -S[i,2]
+        S[i,1] = va + vb - m.pi/2
 
     #Theta4
     for i in range(np.shape(S)[0]):
         x = m.cos(S[i,1] + S[i,2])*(T[2,1]*m.cos(S[i,5]) + T[2,0]*m.sin(S[i,5])) - m.sin(S[i,1] + S[i,2])*m.cos(S[i,0])*(T[0,1]*m.cos(S[i,5]) + T[0,0]*m.sin(S[i,5])) - m.sin(S[i,1] + S[i,2])*m.sin(S[i,0])*(T[1,1]*m.cos(S[i,5]) + T[1,0]*m.sin(S[i,5]))
         y = - m.sin(S[i,1] + S[i,2])*(T[2,1]*m.cos(S[i,5]) + T[2,0]*m.sin(S[i,5])) - m.cos(S[i,1] + S[i,2])*m.cos(S[i,0])*(T[0,1]*m.cos(S[i,5]) + T[0,0]*m.sin(S[i,5])) - m.cos(S[i,1] + S[i,2])*m.sin(S[i,0])*(T[1,1]*m.cos(S[i,5]) + T[1,0]*m.sin(S[i,5]))
-        
         S[i,3] = m.atan2(y,x)
         
     return S
 
-T = TransformDesired(0,-154.28,523.9,90,0,0)
-
-print(T)
-
-S = CalculateThetaValues(T)
-#S = np.sort(S, axis=0)
-
 def format_func(x):
-    return f"{x:8.2f}"  # Adjust the width as needed
+    return f"{x:8.2f}"
+
+time.sleep(1)
+start = time.time()
+T = TransformDesired(-163.079247,-153.284908,464.035240,85.371,-24.595,11.010)
+S = CalculateThetaValues(T)
+print(time.time()-start)
 
 print(np.array2string(S*180/m.pi, formatter={'float_kind': format_func}))
 
 """
-[     0.633022,    -0.768301,     0.094846,  -112.044142 ;
-     -0.111619,    -0.211824,    -0.970913,  -200.758435 ;
-      0.766044,     0.604023,    -0.219846,   441.219650 ;
+[     0.892539,    -0.422618,     0.157379,  -163.079247 ;
+      0.173648,     0.000000,    -0.984808,  -153.284908 ;
+      0.416198,     0.906308,     0.073387,   464.035240 ;
       0.000000,     0.000000,     0.000000,     1.000000 ];
 """
