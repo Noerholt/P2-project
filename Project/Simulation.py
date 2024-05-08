@@ -32,6 +32,15 @@ pillB_start = RL.Item('pill B start')
 pillB_end = RL.Item('pill B end')
 pillB_dep = RL.Item('pill B dep')
 
+#Define targets needed as euler angles for moveL
+#RLItem form = 'itemName'
+
+def targetToEuler(RLitem):
+    
+    position = RL.item(str(RLitem)).Pose()
+
+    print(position)
+
 #program.runProgram([["B","A"],["A","A","B"]])
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
@@ -40,25 +49,10 @@ FullList =[["A","A","B","A"],["B","A","B"],["A","B"],["B","A"]]
 
 #sync.send_coords(home)
 
-def move_perfect_line(targetJoints):
+print("hello")
 
-    #coordRobot = mc.get_angles()
 
-    for x in range(10):
-
-        joints = robot.Joints().list()
-
-        difference = [a-b for b,a in zip(joints,targetJoints)]
-
-        moveSize = [x/10 for x in difference]
-
-        print(moveSize)
-
-        print(difference)
-
-        robot.MoveJ([a+b for a,b in zip(joints,moveSize)])
-
-    #mc.send_angles((difference/20))
+#########################################################################################
 
 def move_perfect_line2(startEuler, endEuler):
 
@@ -67,7 +61,7 @@ def move_perfect_line2(startEuler, endEuler):
 
     num_steps = 100
 
-    viapointJoints2 = [0,0,0,0,0,0]
+    viapointJointsDeg = [0,0,0,0,0,0]
 
     for i in range(num_steps + 1):
         viapoint_pose = startPose + (endPose - startPose) * i / num_steps
@@ -76,21 +70,25 @@ def move_perfect_line2(startEuler, endEuler):
 
         #print(viapointJoints)
 
-        for i in range(6):
+        for i in range(5):
 
-            viapointJoints2[i] = viapointJoints[0,i]*180/math.pi
+            viapointJointsDeg[i] = viapointJoints[0,i]*180/math.pi
 
         #viapointJoints2 = [viapointJoints[0,0],viapointJoints[0,1],viapointJoints[0,2],viapointJoints[0,3],viapointJoints[0,4],viapointJoints[0,5]]
-        print(viapointJoints2)
+        print(viapointJointsDeg)
 
-        robot.MoveJ(viapointJoints2)
+        viapointJointsDeg[5] = 180
 
-    print(robot.SolveIK_All(robot.Pose(), tool=None))
+        print(viapointJointsDeg[5])
 
-move_perfect_line2([70,-250,80,180,0,180], [-220, -150,80,180,0,180])
+        robot.MoveJ(viapointJointsDeg)
+
+#move_perfect_line2([70,-250,80,-180,0,180], [-220, -150,80,-180,0,-180])
+
+
+###########################################################################################################
 
 #robot.MoveJ([0,0,0,0,0,0])
-
 
 #print(robot.Pose())
 #move_perfect_line([-126.236618, -36.785256, -104.413971, 51.199227, 90.000000, -36.236618])
@@ -103,7 +101,7 @@ def runProgram(patientList):
 
     for sublist in patientList:
         t = t+1
-        print(dagPeriode[t])
+        #print(dagPeriode[t])
 
         pillAmountA = sublist.count("A")
         pillAmountB = sublist.count("B") 
@@ -117,7 +115,7 @@ def runProgram(patientList):
             robot.MoveL(pillA_start)
             robot.MoveL(pillA_end)
 
-            tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pillA])
+            #tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pillA])
             #attach pill
             robot.MoveL(pillA_dep)
 
@@ -128,7 +126,7 @@ def runProgram(patientList):
 
             robot.MoveL(RL.Item(dagPeriode[t]))
 
-            tool.DetachAll(RL.Item('MyCobot_320 Base'))
+            #tool.DetachAll(RL.Item('MyCobot_320 Base'))
 
             robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
@@ -152,7 +150,7 @@ def runProgram(patientList):
             robot.MoveL(pillB_start)
             robot.MoveL(pillB_end)
 
-            tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pillB])
+            #tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pillB])
             #attach pill
             robot.MoveL(pillB_dep)
 
@@ -162,7 +160,7 @@ def runProgram(patientList):
 
             robot.MoveL(RL.Item(dagPeriode[t]))
 
-            tool.DetachAll(RL.Item('MyCobot_320 Base'))
+            #tool.DetachAll(RL.Item('MyCobot_320 Base'))
 
             robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
