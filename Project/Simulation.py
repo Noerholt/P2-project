@@ -4,7 +4,7 @@ import inverseKinematics as IK
 import numpy as np
 
 import program
- 
+print("hello2")
 # Any interaction with RoboDK must be done through
 # Robolink()
 
@@ -68,14 +68,14 @@ def move_perfect_line2(startEuler, endEuler):
         
         viapointJoints = IK.CalculateThetaValues(viapoint_pose)
 
-        #print(viapointJoints)
+        print(viapointJoints)
 
         for i in range(5):
 
             viapointJointsDeg[i] = viapointJoints[0,i]*180/math.pi
 
         #viapointJoints2 = [viapointJoints[0,0],viapointJoints[0,1],viapointJoints[0,2],viapointJoints[0,3],viapointJoints[0,4],viapointJoints[0,5]]
-        print(viapointJointsDeg)
+        #print(viapointJointsDeg)
 
         viapointJointsDeg[5] = 180
 
