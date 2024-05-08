@@ -85,6 +85,8 @@ def move_perfect_line2(startEuler, endEuler):
 
         robot.MoveJ(viapointJoints2)
 
+    print(robot.SolveIK_All(robot.Pose(), tool=None))
+
 move_perfect_line2([70,-250,80,180,0,180], [-220, -150,80,180,0,180])
 
 #robot.MoveJ([0,0,0,0,0,0])
