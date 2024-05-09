@@ -8,7 +8,7 @@ print("hello2")
 # Any interaction with RoboDK must be done through
 # Robolink()
 
-RL = Robolink()
+RL = robolink.Robolink()
  
 # get the robot item:
 robot = RL.Item('MyCoBot_320')
