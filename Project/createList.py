@@ -1,4 +1,3 @@
-
 from pillClass import Pill
 
 pillA = Pill("A")
