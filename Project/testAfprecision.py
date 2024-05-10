@@ -11,9 +11,9 @@ def round_up(n, decimals=0):
 
 def printGetCoords():
     listCords = mc.get_coords()
-    x = round_up(listCords[0]/10, 2)
-    y = listCords[1]/10
-    z = listCords[2]/10
+    x = round_up(listCords[0], 2)
+    y = listCords[1]
+    z = listCords[2]
 
     newList = []
     newList.append(x)
@@ -34,26 +34,17 @@ mc.sync_send_angles([0,0,0,0,0,0],25)
 time.sleep(2)
 
 #mc.sync_send_angles([0,-21.8,-115,48,90,0],25)
-time.sleep(2)
-#mc.sync_send_coords([100,-250,130,180,0,-180],25,0,timeout=3)
+"""time.sleep(2)
+mc.sync_send_coords([100,-250,150,180,0,-180],25,0,timeout=3)
 #print("Position 1 = " + str(mc.get_coords()))
-printGetCoords()
+printGetCoords()"""
 
-"""for i in range(1, 3):
-    #mc.sync_send_angles([0,20,105,-39,-86,0],25)
-    #time.sleep(2)
-    mc.sync_send_angles([0,20,115,-48,-90,0],25)
-    time.sleep(1)
-    print("Vinkel 1 = " + str(mc.get_angles()))
+for i in range(1, 11):
+    mc.sync_send_coords([100,-250,130,180,0,-180],25,0,timeout=3)
+    time.sleep(2)
     print("Position 1 = " + str(mc.get_coords()))
-
-
-    #mc.sync_send_angles([0,-20,-105,39,86,0],25)
-    #time.sleep(2)
-    mc.sync_send_angles([0,-20,-115,48,90,0],25)
     
-
-    time.sleep(1)
-    print("Vinkel 2 = " + str(mc.get_angles()))
+    mc.sync_send_coords([-250,20,100,180,0,-180],25,0,timeout=3)
+    time.sleep(2)
     print("Position 2 = " + str(mc.get_coords()))
-    time.sleep(1)"""
+
