@@ -68,9 +68,9 @@ def CalculateThetaValues(T):
         
     return S
 
-def printFunction(x):
+def PrintFunction(x):
     return f"{x:8.2f}"
 
-def printSolution(S):
+def PrintAngleSolution(S):
     np.set_printoptions(suppress=True)
-    print(np.array2string(S*180/m.pi, formatter={'float_kind': printFunction}))
+    print(np.array2string(S*180/m.pi, formatter={'float_kind': PrintFunction}))
