@@ -1,6 +1,6 @@
 from robolink import *    # API to communicate with RoboDK
 from robodk import *      # basic matrix operations
-import inverseKinematics as IK
+import kinematicsLibrary as k
 import numpy as np
 
 import program
@@ -56,8 +56,8 @@ print("hello")
 
 def move_perfect_line2(startEuler, endEuler):
 
-    startPose = IK.TransformDesired(startEuler[0],startEuler[1],startEuler[2],startEuler[3],startEuler[4],startEuler[5])
-    endPose = IK.TransformDesired(endEuler[0],endEuler[1],endEuler[2],endEuler[3],endEuler[4],endEuler[5])
+    startPose = k.TransformDesired(startEuler[0],startEuler[1],startEuler[2],startEuler[3],startEuler[4],startEuler[5])
+    endPose = k.TransformDesired(endEuler[0],endEuler[1],endEuler[2],endEuler[3],endEuler[4],endEuler[5])
 
     num_steps = 100
 
@@ -66,7 +66,7 @@ def move_perfect_line2(startEuler, endEuler):
     for i in range(num_steps + 1):
         viapoint_pose = startPose + (endPose - startPose) * i / num_steps
         
-        viapointJoints = IK.CalculateThetaValues(viapoint_pose)
+        viapointJoints = k.CalculateThetaValues(viapoint_pose)
 
         print(viapointJoints)
 
