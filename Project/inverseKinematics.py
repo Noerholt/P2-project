@@ -3,7 +3,7 @@ from kinematicsLibrary import *
 
 os.system('cls')
 
-T = TransformDesired(128.167582,-101.224607,440.447678,116.194,20.604,62.554)
+T = TransformDesired(-50,-250,50,-180,0,180)
 S = CalculateThetaValues(T)
 PrintAngleSolution(S)
 
