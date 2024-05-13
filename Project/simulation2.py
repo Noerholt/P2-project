@@ -135,7 +135,9 @@ def runProgram(patientList):
 
             Thetas = IK.CalculateThetaValues(T)
 
-            robot.MoveJ(IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]))
+            print([IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][1]), IK.toDeg(Thetas[0][2]), IK.toDeg(Thetas[0][3]), IK.toDeg(Thetas[0][4]), IK.toDeg(Thetas[0][5])])
+
+            robot.MoveJ([IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][1]), IK.toDeg(Thetas[0][2]), IK.toDeg(Thetas[0][3]), IK.toDeg(Thetas[0][4]), IK.toDeg(Thetas[0][5])])
 
             robot.MoveJ(RL.Item('viapoint'))
 
@@ -159,18 +161,17 @@ def runProgram(patientList):
             robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
 
-B = IK.TransformDesired(-50,-250,50,180,0,-180)
+B = IK.TransformDesired(-50,-250,50,-180,0,180)
 
 C = IK.CalculateThetaValues(B)
 
 def format_func(x):
     return f"{x:8.2f}"  # Adjust the width as needed
 
-#print(np.array2string(C*180/math.pi, formatter={'float_kind': format_func}))
+print(np.array2string(C*180/math.pi, formatter={'float_kind': format_func}))
 
-#print(C[0][0]*180/math.pi)
+print(C[0][0]*180/math.pi)
 
-#robot.MoveJ([C[0][0]*180/math.pi,C[0][1]*180/math.pi,C[0][2]*180/math.pi,C[0][3]*180/math.pi,C[0][4]*180/math.pi,C[0][5]*180/math.pi])
+robot.MoveJ([C[0][0]*180/math.pi,C[0][1]*180/math.pi,C[0][2]*180/math.pi,C[0][3]*180/math.pi,C[0][4]*180/math.pi,C[0][5]*180/math.pi])
 
-runProgram(FullList)
-
+#runProgram(FullList)
