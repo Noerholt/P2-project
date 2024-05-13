@@ -3,8 +3,6 @@ from robodk import *      # basic matrix operations
 import inverseKinematics as IK
 import numpy as np
 
-import program
-print("hello2")
 # Any interaction with RoboDK must be done through
 # Robolink()
 
@@ -37,9 +35,26 @@ pillB_dep = RL.Item('pill B dep')
 
 def targetToEuler(RLitem):
     
-    position = RL.item(str(RLitem)).Pose()
+    position = RL.Item(str(RLitem)).Pose()
 
-    print(position)
+    x_pos = round(position[0,3],2)
+    y_pos = round(position[1,3],2)
+    z_pos = round(position[2,3],2)
+
+    Rx_rad = math.atan2(position[2,1], position[2,2])
+    Ry_rad = math.atan2(-position[2,0], (position[2,1]**2+position[2,2]**2)**0.5)
+    Rz_rad = math.atan2(position[1,0], position[0,0])
+
+    #Convert to degrees
+    #Rounded to 2 decimals
+
+    Rx_deg = round(math.degrees(Rx_rad),2)
+    Ry_deg = round(math.degrees(Ry_rad),2)
+    Rz_deg = round(math.degrees(Rz_rad),2)
+
+    return([x_pos,y_pos,z_pos,Rx_deg,Ry_deg,Rz_deg])
+
+viapoint = targetToEuler('viapoint')
 
 #program.runProgram([["B","A"],["A","A","B"]])
 
@@ -48,8 +63,6 @@ dagPeriode = ["morgen", "middag", "aften", "nat"]
 FullList =[["A","A","B","A"],["B","A","B"],["A","B"],["B","A"]]
 
 #sync.send_coords(home)
-
-print("hello")
 
 
 #########################################################################################
@@ -83,7 +96,7 @@ def move_perfect_line2(startEuler, endEuler):
 
         robot.MoveJ(viapointJointsDeg)
 
-#move_perfect_line2([70,-250,80,-180,0,180], [-220, -150,80,-180,0,-180])
+move_perfect_line2([70,-250,80,-180,0,180], viapoint)
 
 
 ###########################################################################################################
