@@ -1,6 +1,6 @@
 from robolink import *    # API to communicate with RoboDK
 from robodk import *      # basic matrix operations
-import inverseKinematics as IK
+from kinematicsLibrary import *
 import numpy as np
 
 # Any interaction with RoboDK must be done through
@@ -62,8 +62,8 @@ FullList =[["A","A","B","A"],["B","A","A"],["A","B"],["B","A"]]
 
 def move_perfect_line2(startEuler, endEuler):
 
-    startPose = IK.TransformDesired(startEuler[0],startEuler[1],startEuler[2],startEuler[3],startEuler[4],startEuler[5])
-    endPose = IK.TransformDesired(endEuler[0],endEuler[1],endEuler[2],endEuler[3],endEuler[4],endEuler[5])
+    startPose = TransformDesired(startEuler[0],startEuler[1],startEuler[2],startEuler[3],startEuler[4],startEuler[5])
+    endPose = TransformDesired(endEuler[0],endEuler[1],endEuler[2],endEuler[3],endEuler[4],endEuler[5])
 
     num_steps = 100
 
@@ -72,7 +72,7 @@ def move_perfect_line2(startEuler, endEuler):
     for i in range(num_steps + 1):
         viapoint_pose = startPose + (endPose - startPose) * i / num_steps
         
-        viapointJoints = IK.CalculateThetaValues(viapoint_pose)
+        viapointJoints = CalculateThetaValues(viapoint_pose)
 
         #print(viapointJoints)
 
@@ -129,15 +129,15 @@ def runProgram(patientList):
 
             #print(pillAapp[1])
 
-            T = IK.TransformDesired(pillAapp[0],pillAapp[1],pillAapp[2],pillAapp[3],pillAapp[4],pillAapp[5])
+            T = TransformDesired(pillAapp[0],pillAapp[1],pillAapp[2],pillAapp[3],pillAapp[4],pillAapp[5])
 
             #print(T)
 
-            Thetas = IK.CalculateThetaValues(T)
+            Thetas = CalculateThetaValues(T)
 
-            print([IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][1]), IK.toDeg(Thetas[0][2]), IK.toDeg(Thetas[0][3]), IK.toDeg(Thetas[0][4]), IK.toDeg(Thetas[0][5])])
+            print([toDeg(Thetas[0][0]), toDeg(Thetas[0][1]), toDeg(Thetas[0][2]), toDeg(Thetas[0][3]), toDeg(Thetas[0][4]), toDeg(Thetas[0][5])])
 
-            robot.MoveJ([IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][1]), IK.toDeg(Thetas[0][2]), IK.toDeg(Thetas[0][3]), IK.toDeg(Thetas[0][4]), IK.toDeg(Thetas[0][5])])
+            robot.MoveJ([toDeg(Thetas[0][0]), toDeg(Thetas[0][1]), toDeg(Thetas[0][2]), toDeg(Thetas[0][3]), toDeg(Thetas[0][4]), toDeg(Thetas[0][5])])
 
             robot.MoveJ(RL.Item('viapoint'))
 
@@ -161,9 +161,9 @@ def runProgram(patientList):
             robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
 
-B = IK.TransformDesired(-50,-250,50,-180,0,180)
+B = TransformDesired(-50,-250,50,-180,0,180)
 
-C = IK.CalculateThetaValues(B)
+C = CalculateThetaValues(B)
 
 def format_func(x):
     return f"{x:8.2f}"  # Adjust the width as needed
