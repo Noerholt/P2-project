@@ -3,6 +3,7 @@ from robodk import *      # basic matrix operations
 import numpy as np
 import inverseKinematics as IK
 import math as m
+import Simulation
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
@@ -54,10 +55,20 @@ def runProgram(patientList):
             #sync.send_coords(approachPillContainer[t], 15, 1)
 
 
-def move_perfect_line():
-    print("hello")
-
 def format_func(x):
     return f"{x:8.2f}"  # Adjust the width as needed
 
 print(np.array2string(IK.CalculateThetaValues(IK.TransformDesired(-250, -75, 80,180,0,-180))*180/m.pi, formatter={'float_kind': format_func}))
+
+
+def move_perfect_line(targetJoints):
+
+    coordRobot = mc.get_angles()
+
+    joints = robot.Joints().list()
+
+    difference = targetJoints - joints
+
+    mc.send_angles((difference/20))
+
+

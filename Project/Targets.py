@@ -17,14 +17,37 @@ class targets:
 
         self.coords = coords
 
+######################################################
+
+#home position
 home = targets([0,0,0,0,0,0])
 
-class pillDivider(targets):
-    def __init__(self,coords,timeOfDay):
-        super().__init__(coords)
+######################################################
 
-        self.timeOfDay = timeOfDay
+#pill container targets
 
-pillDividerMorning = pillDivider([1,1,1,1,1,1],"morning")
+containerApproachPillA = targets([1,1,30,1,1,1])
 
-print(pillDividerMorning.timeOfDay)
+containerPillA = targets([1,1,1,1,1,1])
+
+containerApproachPillB = targets([2,2,30,2,2,2])
+
+containerPillB = targets([1,1,1,1,1,1])
+
+######################################################
+
+#pill divider box targets
+
+pillDividerMorningApproach = targets([1,1,30,1,1,1])
+
+pillDividerMorning = targets([1,1,1,1,1,1])
+
+pillDividerAfternoonApproach = targets([1,1,30,1,1,1])
+
+pillDividerAfternoon = targets([2,2,2,2,2,2])
+
+pillDividerEveningApproach = targets([1,1,30,1,1,1])
+
+pillDividerEvening = targets([3,3,3,3,3,3])
+
+######################################################
