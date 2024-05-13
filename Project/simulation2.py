@@ -14,6 +14,9 @@ tool = RL.Item('End Effector')
 
 #RL.ShowRoboDK()
 
+pillTargetsA = [RL.Item('A pill 1'), RL.Item('A pill 2'), RL.Item('A pill 3'), RL.Item('A pill 4')]
+pillTargetsB = [RL.Item('B pill 1'), RL.Item('B pill 2'), RL.Item('B pill 3'), RL.Item('B pill 4')]
+
 home = RL.Item('home')
 pillA = RL.Item('A pill')
 pillB = RL.Item('B pill')
@@ -123,7 +126,7 @@ def runProgram(patientList):
         for x in range(pillAmountA):
             print("Picking up pill A")
 
-            robot.MoveJ(pillA_app)
+            robot.MoveJ(pillTargetsA[x])
             robot.MoveL(pillA_start)
             robot.MoveL(pillA_end)
 
@@ -191,3 +194,4 @@ def runProgram(patientList):
 
 #runProgram(FullList)
 
+print(targetToEuler('A pill 1'))
