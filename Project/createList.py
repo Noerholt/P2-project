@@ -1,9 +1,7 @@
-
 from pillClass import Pill
 
 pillA = Pill("A")
 pillB = Pill("B")
-
 
 class ListCreator:
     def createList(self, listIn: list) -> None:
