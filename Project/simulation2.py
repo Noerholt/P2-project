@@ -1,6 +1,7 @@
 from robolink import *    # API to communicate with RoboDK
 from robodk import *      # basic matrix operations
 import inverseKinematics as IK
+import numpy as np
 
 # Any interaction with RoboDK must be done through
 # Robolink()
@@ -10,30 +11,7 @@ RL = Robolink()
 # get the robot item:
 robot = RL.Item('MyCoBot_320')
 
-tool = RL.Item('End Effector')
-
-#RL.ShowRoboDK()
-
-pillTargetsA = [RL.Item('A pill 1'), RL.Item('A pill 2'), RL.Item('A pill 3'), RL.Item('A pill 4')]
-pillTargetsB = [RL.Item('B pill 1'), RL.Item('B pill 2'), RL.Item('B pill 3'), RL.Item('B pill 4')]
-
-home = RL.Item('home')
-pillA = RL.Item('A pill')
-pillB = RL.Item('B pill')
-#box A targets:
-pillA_app = RL.Item('pill A app')
-pillA_start = RL.Item('pill A start')
-pillA_end = RL.Item('pill A end')
-pillA_dep = RL.Item('pill A dep')
-
-#box B targets:
-pillB_app = RL.Item('pill B app')
-pillB_start = RL.Item('pill B start')
-pillB_end = RL.Item('pill B end')
-pillB_dep = RL.Item('pill B dep')
-
-#Define targets needed as euler angles for moveL
-#RLItem form = 'itemName'
+tool = RL.Item('Endefffector Assembled')
 
 def targetToEuler(RLitem):
     
@@ -56,13 +34,26 @@ def targetToEuler(RLitem):
 
     return([x_pos,y_pos,z_pos,Rx_deg,Ry_deg,Rz_deg])
 
+#RL.ShowRoboDK()
+
+pillA = RL.Item('pill A start')
+pillAapp = targetToEuler('pill A start app')
+pillB = [RL.Item('pill B start')]
+pillBapp = [RL.Item('pill B start app')]
+
+#Define targets needed as euler angles for moveL
+#RLItem form = 'itemName'
+
+
 viapoint = targetToEuler('viapoint')
+
+print(viapoint)
 
 #program.runProgram([["B","A"],["A","A","B"]])
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
-FullList =[["A","A","B","A"],["B","A","B"],["A","B"],["B","A"]]
+FullList =[["A","A","B","A"],["B","A","A"],["A","B"],["B","A"]]
 
 #sync.send_coords(home)
 
@@ -83,7 +74,7 @@ def move_perfect_line2(startEuler, endEuler):
         
         viapointJoints = IK.CalculateThetaValues(viapoint_pose)
 
-        print(viapointJoints)
+        #print(viapointJoints)
 
         for i in range(5):
 
@@ -94,11 +85,11 @@ def move_perfect_line2(startEuler, endEuler):
 
         viapointJointsDeg[5] = 180
 
-        print(viapointJointsDeg[5])
+        #print(viapointJointsDeg[5])
 
         robot.MoveJ(viapointJointsDeg)
 
-move_perfect_line2([70,-250,80,-180,0,180], viapoint)
+#move_perfect_line2([70,-250,80,-180,0,180], viapoint)
 
 
 ###########################################################################################################
@@ -115,6 +106,7 @@ def runProgram(patientList):
     #robot.MoveJ(home)
 
     for sublist in patientList:
+        pillAapp[1] = -230
         t = t+1
         #print(dagPeriode[t])
 
@@ -124,50 +116,37 @@ def runProgram(patientList):
         #robot.MoveJ(home)
 
         for x in range(pillAmountA):
-            print("Picking up pill A")
+            #print("Picking up pill A")
 
-            robot.MoveJ(pillTargetsA[x])
-            robot.MoveL(pillA_start)
-            robot.MoveL(pillA_end)
+            #robot.MoveJ(pillTargetsA[x])
 
             #tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pillA])
             #attach pill
-            robot.MoveL(pillA_dep)
 
+            #print(pillAapp)
 
-            robot.MoveL(RL.Item('viapoint'))
+            pillAapp[1] = pillAapp[1] - 20
 
-            robot.MoveL(RL.Item(dagPeriode[t]+" app"))
+            #print(pillAapp[1])
 
-            robot.MoveL(RL.Item(dagPeriode[t]))
+            T = IK.TransformDesired(pillAapp[0],pillAapp[1],pillAapp[2],pillAapp[3],pillAapp[4],pillAapp[5])
 
-            #tool.DetachAll(RL.Item('MyCobot_320 Base'))
+            #print(T)
 
-            robot.MoveL(RL.Item(dagPeriode[t]+" app"))
+            Thetas = IK.CalculateThetaValues(T)
 
-            #sync.send_coords(approachPillA, 25, 0)
-            #sync.send_coords(pickPillA, 15, 1)
+            robot.MoveJ(IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]), IK.toDeg(Thetas[0][0]))
 
-            #gripperCommand(pick)
-
-            #sync.send_coords(approachPillA, 25, 0)
-            #sync.send_coords(approachPillContainer[t], 25, 0)
-            #sync.send_coords(dropPillContainter[t], 15, 1)
-
-            #gripperCommand(drop)
-
-            #sync.send_coords(approachPillContainer[t], 15, 1)
+            robot.MoveJ(RL.Item('viapoint'))
 
         for x in range (pillAmountB):
-            print("Picking up pill B")
+            #print("Picking up pill B")
 
-            robot.MoveJ(pillB_app)
-            robot.MoveL(pillB_start)
-            robot.MoveL(pillB_end)
 
             #tool.AttachClosest(keyword='', tolerance_mm=-2,list_objects=[pillB])
             #attach pill
-            robot.MoveL(pillB_dep)
+
+            #robot.moveJ(pillTargetsB[x])
 
             robot.MoveL(RL.Item('viapoint'))
 
@@ -179,19 +158,19 @@ def runProgram(patientList):
 
             robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
-            #sync.send_coords(approachPillB, 25, 0)
-            #sync.send_coords(pickPillB, 15, 1)
 
-            #gripperCommand(pick)
+B = IK.TransformDesired(-50,-250,50,180,0,-180)
 
-            #sync.send_coords(approachPillB, 25, 0)
-            #sync.send_coords(approachPillContainer[t], 25, 0)
-            #sync.send_coords(dropPillContainter[t], 15, 1)
+C = IK.CalculateThetaValues(B)
 
-            #gripperCommand(drop)
+def format_func(x):
+    return f"{x:8.2f}"  # Adjust the width as needed
 
-            #sync.send_coords(approachPillContainer[t], 15, 1)
+#print(np.array2string(C*180/math.pi, formatter={'float_kind': format_func}))
 
-#runProgram(FullList)
+#print(C[0][0]*180/math.pi)
 
-print(targetToEuler('A pill 1'))
+#robot.MoveJ([C[0][0]*180/math.pi,C[0][1]*180/math.pi,C[0][2]*180/math.pi,C[0][3]*180/math.pi,C[0][4]*180/math.pi,C[0][5]*180/math.pi])
+
+runProgram(FullList)
+
