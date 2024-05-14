@@ -22,34 +22,46 @@ class targets:
 #home position
 home = targets([0,0,0,0,0,0])
 
+#viapoint position
+viapoint = targets([-195,-225,50,180,0,0])
+
 ######################################################
 
 #pill container targets
 
-approachPillA = targets([1,1,30,1,1,1])
+ApproachPillA = targets([-50,-250,50,-180,0,0])
 
-pickPillA = targets([1,1,1,1,1,1])
+PickPillA = targets([-50,-250,20,-180,0,0])
 
-ApproachPillB = targets([2,2,30,2,2,2])
+ApproachPillB = targets([50,-250,50,-180,0,0])
 
-pickPillB = targets([1,1,1,1,1,1])
+PickPillB = targets([50,-250,20,-180,0,0])
 
 ######################################################
 
 #pill divider box targets
 
-pillDividerMorningApproach = targets([1,1,30,1,1,1])
+MorningApproach = targets([-250,-75,70,-180,0,0])
 
-pillDividerMorning = targets([1,1,1,1,1,1])
+MorningDrop = targets([-250,-75,30,-180,0,0])
 
-pillDividerAfternoonApproach = targets([1,1,30,1,1,1])
+AfternoonApproach = targets([-250,-45,70,-180,0,0])
 
-pillDividerAfternoon = targets([2,2,2,2,2,2])
+AfternoonDrop = targets([-250,-45,30,-180,0,0])
 
-pillDividerEveningApproach = targets([1,1,30,1,1,1])
+EveningApproach = targets([-250,-15,70,-180,0,0])
 
-pillDividerEvening = targets([3,3,3,3,3,3])
+EveningDrop = targets([-250,-15,30,-180,0,0])
 
-######################################################
+NightApproach = targets([-250,15,70,-180,0,0])
 
-print(home.coords)
+NightDrop = targets([-250,15,30,-180,0,0])
+
+#####################################################
+
+#lists of targets
+
+#dayContainer targets:
+
+dayTargetsApproach = [MorningApproach, AfternoonApproach, EveningApproach, NightApproach]
+dayTargetsDrop = [MorningDrop, AfternoonDrop, EveningDrop, NightDrop]
