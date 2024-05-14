@@ -36,10 +36,10 @@ def targetToEuler(RLitem):
 
 #RL.ShowRoboDK()
 
-pillA = RL.Item('pill A start')
+pillA = targetToEuler('pill A start')
 pillAapp = targetToEuler('pill A start app')
-pillB = [RL.Item('pill B start')]
-pillBapp = [RL.Item('pill B start app')]
+pillB = targetToEuler('pill B start')
+pillBapp = targetToEuler('pill B start app')
 
 #Define targets needed as euler angles for moveL
 #RLItem form = 'itemName'
@@ -53,7 +53,7 @@ print(viapoint)
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
-FullList =[["A","A","B","A"],["B","A","A"],["A","B"],["B","A"]]
+FullList =[["A","A","A","A"],["B","B","B"],["B","B"],["B","A"]]
 
 #sync.send_coords(home)
 
@@ -107,6 +107,10 @@ def runProgram(patientList):
 
     for sublist in patientList:
         pillAapp[1] = -230
+        pillA[1] = -230
+        pillBapp[1] = -230
+        pillB[1] = -230
+        print(pillBapp)
         t = t+1
         #print(dagPeriode[t])
 
@@ -126,20 +130,31 @@ def runProgram(patientList):
             #print(pillAapp)
 
             pillAapp[1] = pillAapp[1] - 20
+            pillA[1] = pillA[1] - 20
 
-            #print(pillAapp[1])
-
-            T = TransformDesired(pillAapp[0],pillAapp[1],pillAapp[2],pillAapp[3],pillAapp[4],pillAapp[5])
+            T_Aapp = TransformDesired(pillAapp[0],pillAapp[1],pillAapp[2],pillAapp[3],pillAapp[4],pillAapp[5])
+            T_A = TransformDesired(pillA[0],pillA[1],pillA[2],pillA[3],pillA[4],pillA[5])
 
             #print(T)
 
-            Thetas = CalculateThetaValues(T)
+            ThetasAapp = CalculateThetaValues(T_Aapp)
+            ThetasA = CalculateThetaValues(T_A)
 
-            print([toDeg(Thetas[0][0]), toDeg(Thetas[0][1]), toDeg(Thetas[0][2]), toDeg(Thetas[0][3]), toDeg(Thetas[0][4]), toDeg(Thetas[0][5])])
+            robot.MoveJ([toDeg(ThetasAapp[0][0]), toDeg(ThetasAapp[0][1]), toDeg(ThetasAapp[0][2]), toDeg(ThetasAapp[0][3]), toDeg(ThetasAapp[0][4]), toDeg(ThetasAapp[0][5])])
 
-            robot.MoveJ([toDeg(Thetas[0][0]), toDeg(Thetas[0][1]), toDeg(Thetas[0][2]), toDeg(Thetas[0][3]), toDeg(Thetas[0][4]), toDeg(Thetas[0][5])])
+            robot.MoveL([toDeg(ThetasA[0][0]), toDeg(ThetasA[0][1]), toDeg(ThetasA[0][2]), toDeg(ThetasA[0][3]), toDeg(ThetasA[0][4]), toDeg(ThetasA[0][5])])
 
-            robot.MoveJ(RL.Item('viapoint'))
+            robot.MoveL([toDeg(ThetasAapp[0][0]), toDeg(ThetasAapp[0][1]), toDeg(ThetasAapp[0][2]), toDeg(ThetasAapp[0][3]), toDeg(ThetasAapp[0][4]), toDeg(ThetasAapp[0][5])])
+
+            robot.MoveL(RL.Item('viapoint'))
+
+            robot.MoveL(RL.Item(dagPeriode[t]+" app"))
+
+            robot.MoveL(RL.Item(dagPeriode[t]))
+
+            #tool.DetachAll(RL.Item('MyCobot_320 Base'))
+
+            robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
         for x in range (pillAmountB):
             #print("Picking up pill B")
@@ -149,6 +164,23 @@ def runProgram(patientList):
             #attach pill
 
             #robot.moveJ(pillTargetsB[x])
+
+            pillBapp[1] = pillBapp[1] - 20
+            pillB[1] = pillB[1] - 20
+
+            T_Bapp = TransformDesired(pillBapp[0],pillBapp[1],pillBapp[2],pillBapp[3],pillBapp[4],pillBapp[5])
+            T_B = TransformDesired(pillB[0],pillB[1],pillB[2],pillB[3],pillB[4],pillB[5])
+
+            #print(T)
+
+            ThetasBapp = CalculateThetaValues(T_Bapp)
+            ThetasB = CalculateThetaValues(T_B)
+
+            robot.MoveJ([toDeg(ThetasBapp[0][0]), toDeg(ThetasBapp[0][1]), toDeg(ThetasBapp[0][2]), toDeg(ThetasBapp[0][3]), toDeg(ThetasBapp[0][4]), toDeg(ThetasBapp[0][5])])
+
+            robot.MoveL([toDeg(ThetasB[0][0]), toDeg(ThetasB[0][1]), toDeg(ThetasB[0][2]), toDeg(ThetasB[0][3]), toDeg(ThetasB[0][4]), toDeg(ThetasB[0][5])])
+
+            robot.MoveJ([toDeg(ThetasBapp[0][0]), toDeg(ThetasBapp[0][1]), toDeg(ThetasBapp[0][2]), toDeg(ThetasBapp[0][3]), toDeg(ThetasBapp[0][4]), toDeg(ThetasBapp[0][5])])
 
             robot.MoveL(RL.Item('viapoint'))
 
@@ -161,16 +193,16 @@ def runProgram(patientList):
             robot.MoveL(RL.Item(dagPeriode[t]+" app"))
 
 
-B = TransformDesired(-50,-250,50,-180,0,180)
+B = TransformDesired(-250, 15, 80, 180, 0, -180)
 
 C = CalculateThetaValues(B)
 
 def format_func(x):
     return f"{x:8.2f}"  # Adjust the width as needed
 
-print(np.array2string(C*180/math.pi, formatter={'float_kind': format_func}))
+#print(np.array2string(C*180/math.pi, formatter={'float_kind': format_func}))
 
-print(C[0][0]*180/math.pi)
+#print(C[0][0]*180/math.pi)
 
 #robot.MoveJ([C[0][0]*180/math.pi,C[0][1]*180/math.pi,C[0][2]*180/math.pi,C[0][3]*180/math.pi,C[0][4]*180/math.pi,C[0][5]*180/math.pi])
 

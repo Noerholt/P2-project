@@ -26,13 +26,13 @@ home = targets([0,0,0,0,0,0])
 
 #pill container targets
 
-containerApproachPillA = targets([1,1,30,1,1,1])
+approachPillA = targets([1,1,30,1,1,1])
 
-containerPillA = targets([1,1,1,1,1,1])
+pickPillA = targets([1,1,1,1,1,1])
 
-containerApproachPillB = targets([2,2,30,2,2,2])
+ApproachPillB = targets([2,2,30,2,2,2])
 
-containerPillB = targets([1,1,1,1,1,1])
+pickPillB = targets([1,1,1,1,1,1])
 
 ######################################################
 
@@ -51,3 +51,5 @@ pillDividerEveningApproach = targets([1,1,30,1,1,1])
 pillDividerEvening = targets([3,3,3,3,3,3])
 
 ######################################################
+
+print(home.coords)
