@@ -207,3 +207,4 @@ def format_func(x):
 #robot.MoveJ([C[0][0]*180/math.pi,C[0][1]*180/math.pi,C[0][2]*180/math.pi,C[0][3]*180/math.pi,C[0][4]*180/math.pi,C[0][5]*180/math.pi])
 
 runProgram(FullList)
+
