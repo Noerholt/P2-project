@@ -8,8 +8,8 @@ import time
 from Targets import *
 
 os.system('cls')
-#mc = MyCobot("COM17", 115200) #Victor
-mc = MyCobot("COM1", 115200) #Magnus
+mc = MyCobot("COM17", 115200) #Victor
+#mc = MyCobot("COM1", 115200) #Magnus
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
@@ -108,7 +108,7 @@ mc.sync_send_angles([0,0,0,0,0,0],25)
 #mc.send_coords([-260,-15,130,180,0,0],20 ,0)
 # 
 
-mc.sync_send_angles([0,0,0,0,0,0],25)
+#mc.sync_send_angles([0,0,0,0,0,0],25)
 #
 #print(mc.get_coords())
 #
@@ -118,7 +118,7 @@ mc.sync_send_angles([0,0,0,0,0,0],25)
 #
 #time.sleep(10)
 
-#runProgram(FullList)
+runProgram(FullList)
 
 
 

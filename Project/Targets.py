@@ -20,6 +20,9 @@ class targets:
     def update_coords(self, new_coords):
         self.coords = new_coords
 
+    def update_single_coord(self, index, value):
+        self.coords[index] = value
+
 ######################################################
 
 #home position
