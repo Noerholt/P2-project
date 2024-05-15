@@ -64,17 +64,21 @@ def runProgram(patientList):
 
 mc.sync_send_angles([0,0,0,0,0,0],25)
 
-#mc.sync_send_coords([-110,-263,130,180,0,0],20,0)
-#
-#mc.sync_send_coords([-110,-263,44,180,0,0],20,1)
-#
-#time.sleep(2)
-#
-#mc.send_coords([-110,-263,130,180,0,0],20,0)
-#
-#mc.send_coords([-260,-15,130,180,0,0],20 ,0)
-#
-#mc.send_coords([-260,-15,65,180,0,0],20, 1)
+mc.sync_send_coords([-110,-263,130,180,0,0],20,0)
+
+mc.sync_send_coords([-110,-263,44,180,0,0],20,1)
+
+time.sleep(2)
+
+mc.send_coords([-110,-263,130,180,0,0],20,0)
+
+mc.send_coords([-260,-15,130,180,0,0],20 ,0)
+
+mc.send_coords([-260,-15,65,180,0,0],20, 1)
+
+time.sleep(3)
+
+mc.sync_send_angles([0,0,0,0,0,0],25)
 
 #print(mc.get_coords())
 
