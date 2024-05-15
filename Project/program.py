@@ -1,4 +1,5 @@
 import math
+import os
 from pymycobot.mycobot import MyCobot
 from Product.kinematicsLibrary import *
 
@@ -6,6 +7,7 @@ from pymycobot import PI_PORT, PI_BAUD
 import time
 from Targets import *
 
+os.system('cls')
 mc = MyCobot("COM17", 115200)
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
@@ -96,16 +98,13 @@ mc.sync_send_angles([0,0,0,0,0,0],25)
 
 
 T = TransformDesired(-100,-250,130,180,0,0)
-
 S = toDeg(CalculateThetaValues(T))
-
-#print(S[0,0])
 
 mc.sync_send_angles([S[0,0],S[0,1],S[0,2],S[0,3],S[0,4],S[0,5]],25)
 
 time.sleep(2)
-print(mc.get_coords())
+print(f"{"coords = "} {mc.get_coords()} {", angles ="} {mc.get_angles()}")
 
 AdjustAngles(mc, S[0,:])
 time.sleep(2)
-print(mc.get_coords())
+print(f"{"coords = "} {mc.get_coords()} {", angles ="} {mc.get_angles()}")

@@ -88,10 +88,11 @@ def PrintAngleSolution(S):
 def AdjustAngles(mc: MyCobot, anglesDesired: list):
     satisfied = 0
     tempAngles = anglesDesired
+    print(tempAngles)
     while (satisfied < 6):
         for i in range(6):
             while(True):
-                print(f"{"i = "} {i} {", tempAngles[i] ="} {tempAngles[i]}")
+                print(f"{"i = "} {i} {", tempAngles[i] ="} {tempAngles[i]} {", get_angles[i] ="} {mc.get_angles()[i]}")
                 if (anglesDesired[i] - 0.2 < mc.get_angles()[i] < anglesDesired[i]):
                     break
                 elif(anglesDesired[i] < mc.get_angles()[i] < anglesDesired[i] + 0.2):
