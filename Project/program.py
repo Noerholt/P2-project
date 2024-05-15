@@ -8,7 +8,8 @@ import time
 from Targets import *
 
 os.system('cls')
-mc = MyCobot("COM17", 115200)
+#mc = MyCobot("COM17", 115200) #Victor
+mc = MyCobot("COM1", 115200) #Magnus
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
@@ -120,16 +121,15 @@ mc.sync_send_angles([0,0,0,0,0,0],25)
 #runProgram(FullList)
 
 
-# Useless program fra Magnus:
 
-#T = TransformDesired(-100,-250,130,180,0,0)
-#S = toDeg(CalculateThetaValues(T))
-#
-#mc.sync_send_angles([S[0,0],S[0,1],S[0,2],S[0,3],S[0,4],S[0,5]],25)
-#
-#time.sleep(2)
-#print(f"{"coords = "} {mc.get_coords()} {", angles ="} {mc.get_angles()}")
-#
-#AdjustAngles(mc, S[0,:])
-#time.sleep(2)
-#print(f"{"coords = "} {mc.get_coords()} {", angles ="} {mc.get_angles()}")
+T = TransformDesired(-100,-250,130,180,0,0)
+S = toDeg(CalculateThetaValues(T))
+
+mc.sync_send_angles([S[0,0],S[0,1],S[0,2],S[0,3],S[0,4],S[0,5]],25)
+
+time.sleep(2)
+print(f"{"coords = "} {mc.get_coords()} {", angles ="} {mc.get_angles()}")
+
+AdjustAngles(mc, S[0,:])
+time.sleep(2)
+print(f"{"coords = "} {mc.get_coords()} {", angles ="} {mc.get_angles()}")
