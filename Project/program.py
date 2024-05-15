@@ -13,7 +13,7 @@ mc = MyCobot("COM17", 115200) #Victor
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
-FullList =[["A","B"],["B","A","B"],["B","B"],["B","A"]]
+FullList =[["A","A"],["A","A","A"],["B","B"],["B","A"]]
 
 #sync_send_coords(home)
 
@@ -45,8 +45,8 @@ def runProgram(patientList):
             time.sleep(2)
             mc.sync_send_coords(ApproachPillA.coords, 25, 1, 1)
 
-            ApproachPillA.update_single_coord(1, ApproachPillA[1]-50)
-            PickPillA.update_single_coord(1, PickPillA[1]-50)
+            ApproachPillA.update_single_coord(1, ApproachPillA.coords[1]-50)
+            PickPillA.update_single_coord(1, PickPillA.coords[1]-50)
             #Update coords to pick up next pill
 
             mc.sync_send_coords(viapoint.coords,25,1, 1)
@@ -68,8 +68,8 @@ def runProgram(patientList):
             mc.sync_send_coords(ApproachPillB.coords, 25, 1, 1)
 
             #Update coords to pick up next pill
-            ApproachPillB.update_single_coord(1, ApproachPillB[1]-50)
-            PickPillB.update_single_coord(1, PickPillB[1]-50)
+            ApproachPillB.update_single_coord(1, ApproachPillB.coords[1]-50)
+            PickPillB.update_single_coord(1, PickPillB.coords[1]-50)
 
             mc.sync_send_coords(viapoint.coords,25,1, 1)
             mc.sync_send_coords(dayTargetsApproach[t].coords, 25, 1, 5)
@@ -79,17 +79,19 @@ def runProgram(patientList):
 
             mc.sync_send_coords(viapoint.coords,25,1, 1)
     
-    ApproachPillA.update_single_coord(0,-55)
-    ApproachPillB.update_single_coord(0,-55)
-    ApproachPillA.update_single_coord(1,-215)
-    ApproachPillB.update_single_coord(1,-215)
-    PickPillA.update_single_coord(0,55)
-    PickPillB.update_single_coord(0,55)
-    PickPillA.update_single_coord(1,-215)
-    PickPillB.update_single_coord(1,-215)
+        ApproachPillA.update_single_coord(0,ApproachPillA.coords[0]-50)
+        ApproachPillB.update_single_coord(0,ApproachPillB.coords[0]-50)
+        ApproachPillA.update_single_coord(1,-215)
+        ApproachPillB.update_single_coord(1,-215)
+        PickPillA.update_single_coord(0,PickPillA.coords[0]+50)
+        PickPillB.update_single_coord(0,PickPillB.coords[0]+50)
+        PickPillA.update_single_coord(1,-215)
+        PickPillB.update_single_coord(1,-215)
+
+        print(ApproachPillA.coords[0])
 
 
-mc.sync_send_angles([0,0,0,0,0,0],25)
+#mc.sync_send_angles([0,0,0,0,0,0],25)
 #
 #mc.sync_send_coords([-110,-263,130,180,0,0],20,0)
 #
