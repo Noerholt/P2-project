@@ -1,7 +1,7 @@
 import tkinter as tk
 from pymycobot.mycobot import MyCobot
 from pymycobot import PI_PORT, PI_BAUD
-from kinematicsLibrary import *
+from Project.Product.kinematicsLibrary import *
 
 mc = MyCobot("COM5", 115200)
 mc.set_world_reference([0,0,0,0,0,0])
