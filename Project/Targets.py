@@ -17,6 +17,9 @@ class targets:
 
         self.coords = coords
 
+    def update_coords(self, new_coords):
+        self.coords = new_coords
+
 ######################################################
 
 #home position
@@ -29,21 +32,21 @@ viapoint = targets([-195,-225,130,180,0,0])
 
 #pill container targets
 
-ApproachPillA = targets([-50,-250,130,-180,0,0])
+ApproachPillA = targets([-55,-215,130,-180,0,0])
 
-PickPillA = targets([-50,-250,60,-180,0,0])
+PickPillA = targets([-55,-215,41,-180,0,0])
 
-ApproachPillB = targets([50,-250,130,-180,0,0])
+ApproachPillB = targets([55,-215,130,-180,0,0])
 
-PickPillB = targets([50,-250,60,-180,0,0])
+PickPillB = targets([55,-215,37,-180,0,90])
 
 ######################################################
 
 #pill divider box targets
 
-MorningApproach = targets([-250,-75,130,-180,0,0])
+MorningApproach = targets([-260,-15,130,-180,0,0])
 
-MorningDrop = targets([-250,-75,70,-180,0,0])
+MorningDrop = targets([-260,-15,70,-180,0,0])
 
 AfternoonApproach = targets([-250,-45,130,-180,0,0])
 
