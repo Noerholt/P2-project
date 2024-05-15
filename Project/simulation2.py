@@ -1,6 +1,6 @@
 from robolink import *    # API to communicate with RoboDK
 from robodk import *      # basic matrix operations
-from kinematicsLibrary import *
+from Project.Product.kinematicsLibrary import *
 import numpy as np
 
 # Any interaction with RoboDK must be done through

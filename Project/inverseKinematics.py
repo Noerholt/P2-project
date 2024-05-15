@@ -1,5 +1,5 @@
 import os
-from kinematicsLibrary import *
+from Project.Product.kinematicsLibrary import *
 
 os.system('cls')
 
