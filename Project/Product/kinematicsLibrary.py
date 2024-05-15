@@ -1,5 +1,6 @@
 import math as m
 import numpy as np
+from pymycobot.mycobot import MyCobot
 
 def toDeg(input):
     return input*180/m.pi
@@ -83,3 +84,34 @@ def PrintFunction(x):
 def PrintAngleSolution(S):
     np.set_printoptions(suppress=True)
     print(np.array2string(S*180/m.pi, formatter={'float_kind': PrintFunction}))
+
+def AdjustAngles(mc: MyCobot, anglesDesired: list):
+    satisfied = 0
+    tempAngles = anglesDesired
+    while (satisfied < 6):
+        for i in range(6):
+            while(True):
+                if (anglesDesired[i] - 0.2 < mc.get_angles()[i] < anglesDesired[i]):
+                    break
+                elif(anglesDesired[i] < mc.get_angles()[i] < anglesDesired[i] + 0.2):
+                    break
+                elif(mc.get_angles()[i] < anglesDesired[i]):
+                    tempAngles[i] += 0.1
+                    mc.sync_send_angles(tempAngles,5)
+                elif(mc.get_angles()[i] > anglesDesired[i]):
+                    tempAngles[i] -= 0.1
+                    mc.sync_send_angles(tempAngles,5)
+            
+            satisfied += 1
+    
+
+# anglesDesired = [90,90,90,90,90,90], mc.get_angles() = [89.8,90,90,90,90,90]
+# 89.8 < 89.8 < 90: false 
+# 90 < 89.8 < 90.2: false
+# tempAngles = [90.1,90,90,90,90,90]
+
+# anglesDesired = [89,90,90,90,90,90], mc.get_angles() = [90,90,90,90,90,90]
+# 88.8 < 90 < 89 false
+# 89 < 90 < 89.2 false
+
+# tempAngles = [89.1,90,90,90,90,90]
