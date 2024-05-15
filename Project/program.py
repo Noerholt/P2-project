@@ -1,5 +1,6 @@
 import math
 from pymycobot.mycobot import MyCobot
+from Product.kinematicsLibrary import *
 
 from pymycobot import PI_PORT, PI_BAUD
 import time
@@ -9,7 +10,7 @@ mc = MyCobot("COM17", 115200)
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
-FullList =[["A","A","B","A"],["B","A","B"]]
+FullList =[["A","B","A"],["B","A","B"],["B","B"],["B","A"]]
 
 #sync_send_coords(home)
 
@@ -22,6 +23,8 @@ def runProgram(patientList):
 
     mc.sync_send_angles([0,0,0,0,0,0],25)
 
+    mc.sync_send_coords(ApproachPillA.coords, 25, 0, 1)
+
     for sublist in patientList:
 
         print(dagPeriode[t])
@@ -32,37 +35,41 @@ def runProgram(patientList):
         for x in range(pillAmountA):
             print("Picking up pill A")
 
-            mc.sync_send_coords(ApproachPillA.coords, 25, 0)
-            mc.sync_send_coords(PickPillA.coords, 15, 1)
+            mc.sync_send_coords(ApproachPillA.coords, 25, 1, 1)
+            mc.sync_send_coords(PickPillA.coords, 15, 1, 1)
             time.sleep(2)
-            mc.sync_send_coords(ApproachPillA.coords, 25, 1)
+            mc.sync_send_coords(ApproachPillA.coords, 25, 1, 1)
 
-            mc.sync_send_coords(viapoint.coords,25,1)
+            mc.sync_send_coords(viapoint.coords,25,1, 1)
 
-            mc.sync_send_coords(dayTargetsApproach[t].coords, 25, 1)
-            mc.sync_send_coords(dayTargetsDrop[t].coords, 25, 1)
+            mc.sync_send_coords(dayTargetsApproach[t].coords, 25, 1, 1)
+            mc.sync_send_coords(dayTargetsDrop[t].coords, 25, 1, 1)
             time.sleep(2)
-            mc.sync_send_coords(dayTargetsApproach[t].coords, 15, 1)
+            mc.sync_send_coords(dayTargetsApproach[t].coords, 15, 1, 1)
+
+            mc.sync_send_coords(viapoint.coords,25,1, 1)
 
             t = t+1
 
         for x in range (pillAmountB):
             print("Picking up pill B")
 
-            mc.sync_send_coords(ApproachPillB.coords, 25, 0)
-            mc.sync_send_coords(PickPillB.coords, 15, 1)
+            mc.sync_send_coords(ApproachPillB.coords, 25, 1, 1)
+            mc.sync_send_coords(PickPillB.coords, 15, 1, 1)
             time.sleep(2)
-            mc.sync_send_coords(ApproachPillB.coords, 25, 1)
+            mc.sync_send_coords(ApproachPillB.coords, 25, 1, 1)
 
-            mc.sync_send_coords(viapoint.coords,25,1)
-            mc.sync_send_coords(dayTargetsApproach[t].coords, 25, 1)
-            mc.sync_send_coords(dayTargetsDrop[t].coords, 25, 1)
+            mc.sync_send_coords(viapoint.coords,25,1, 1)
+            mc.sync_send_coords(dayTargetsApproach[t].coords, 25, 1, 1)
+            mc.sync_send_coords(dayTargetsDrop[t].coords, 25, 1, 1)
             time.sleep(2)
-            mc.sync_send_coords(dayTargetsApproach[t].coords, 15, 1)
+            mc.sync_send_coords(dayTargetsApproach[t].coords, 15, 1, 1)
+
+            mc.sync_send_coords(viapoint.coords,25,1, 1)
 
             t = t+1
 
-#mc.sync_send_angles([0,0,0,0,0,0],25)
+mc.sync_send_angles([0,0,0,0,0,0],25)
 #
 #mc.sync_send_coords([-110,-263,130,180,0,0],20,0)
 #
@@ -84,4 +91,21 @@ def runProgram(patientList):
 
 #print(mc.get_coords())
 
-runProgram(FullList)
+#runProgram(FullList)
+
+
+
+T = TransformDesired(-100,-250,130,180,0,0)
+
+S = toDeg(CalculateThetaValues(T))
+
+#print(S[0,0])
+
+mc.sync_send_angles([S[0,0],S[0,1],S[0,2],S[0,3],S[0,4],S[0,5]],25)
+
+time.sleep(2)
+print(mc.get_coords())
+
+AdjustAngles(mc, S[0,:])
+time.sleep(2)
+print(mc.get_coords())

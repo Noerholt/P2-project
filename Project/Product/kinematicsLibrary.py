@@ -91,6 +91,7 @@ def AdjustAngles(mc: MyCobot, anglesDesired: list):
     while (satisfied < 6):
         for i in range(6):
             while(True):
+                print(f"{"i = "} {i} {", tempAngles[i] ="} {tempAngles[i]}")
                 if (anglesDesired[i] - 0.2 < mc.get_angles()[i] < anglesDesired[i]):
                     break
                 elif(anglesDesired[i] < mc.get_angles()[i] < anglesDesired[i] + 0.2):
