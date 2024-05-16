@@ -93,13 +93,14 @@ def AdjustAngles(mc: MyCobot, anglesDesired: list):
         while not(anglesDesired[i] - 0.05 < mc.get_angles()[i] < anglesDesired[i] + 0.05):
             #print(f"{'anglesDesired[i] ='} {anglesDesired[i]} {'i ='} {i} {', tempAngles[i] ='} {tempAngles[i]} {', currentAngle ='} {mc.get_angles()[i]}")
             if(mc.get_angles()[i] < anglesDesired[i]):
-                tempAngles[i] += 0.025
+                tempAngles[i] += 0.05
             else:
-                tempAngles[i] -= 0.025
-            mc.sync_send_angles(tempAngles,1)
+                tempAngles[i] -= 0.05
+            mc.sync_send_angles(tempAngles,4)
     print(f"{'prevAngles:     '} {prevAngles}")
     print(f"{'anglesDesired:  '} {[round(num, 2) for num in anglesDesired]}")
     print(f"{'mc.get_angles():'} {mc.get_angles()}")
+    print(f"{'tempAngles:     '} {[round(num, 2) for num in tempAngles]}")
 
 # anglesDesired = [90,90,90,90,90,90], mc.get_angles() = [89.8,90,90,90,90,90]
 # 89.8 < 89.8 < 90: false 

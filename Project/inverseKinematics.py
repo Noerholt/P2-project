@@ -8,9 +8,9 @@ os.system('cls')
 mc = MyCobot("COM1", 115200)
 mc.sync_send_angles([0,0,0,0,0,0],30)
 
-T = TransformDesired(-55,-215,130,-180,0,0)
+T = TransformDesired(-55,-215,70,-180,0,0)
 S = CalculateThetaValues(T)
-PrintAngleSolution(S)
+#PrintAngleSolution(S)
 anglesDesired = []
 
 for i in range(6):
@@ -19,4 +19,6 @@ for i in range(6):
 print("Running")
 mc.sync_send_angles(anglesDesired,30)
 print("Adjusting")
+start = time.time()
 AdjustAngles(mc,anglesDesired)
+print(f"{'Time taken:'}{time.time()-start}")
