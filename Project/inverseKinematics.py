@@ -1,15 +1,22 @@
 import os
-from Project.Product.kinematicsLibrary import *
+import time
+from Product.kinematicsLibrary import *
+from pymycobot.mycobot import MyCobot
+from pymycobot import PI_PORT, PI_BAUD
 
 os.system('cls')
+mc = MyCobot("COM1", 115200)
+mc.sync_send_angles([0,0,0,0,0,0],30)
 
-T = TransformDesired(-50,-250,50,-180,0,180)
+T = TransformDesired(-55,-215,130,-180,0,0)
 S = CalculateThetaValues(T)
 PrintAngleSolution(S)
+anglesDesired = []
 
-"""
-[     0.431438,     0.537267,     0.724711,   128.167582 ;
-      0.830679,     0.076767,    -0.551434,  -101.224607 ;
-     -0.351901,     0.839912,    -0.413176,   440.447678 ;
-      0.000000,     0.000000,     0.000000,     1.000000 ];
-"""
+for i in range(6):
+    anglesDesired.append(ToDeg(S[0,i]))
+
+print("Running")
+mc.sync_send_angles(anglesDesired,30)
+print("Adjusting")
+AdjustAngles(mc,anglesDesired)

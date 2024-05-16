@@ -2,7 +2,7 @@ import math as m
 import numpy as np
 from pymycobot.mycobot import MyCobot
 
-def toDeg(input):
+def ToDeg(input):
     return input*180/m.pi
 
 def TransformDesired(x,y,z,Rx,Ry,Rz):
@@ -87,25 +87,19 @@ def PrintAngleSolution(S):
 
 def AdjustAngles(mc: MyCobot, anglesDesired: list):
     satisfied = 0
-    tempAngles = anglesDesired
-    print(tempAngles)
-    while (satisfied < 6):
-        for i in range(6):
-            while(True):
-                print(f"{'i ='} {i} {', tempAngles[i] ='} {tempAngles[i]} {', get_angles[i] ='} {mc.get_angles()[i]}")
-                if (anglesDesired[i] - 0.2 < mc.get_angles()[i] < anglesDesired[i]):
-                    break
-                elif(anglesDesired[i] < mc.get_angles()[i] < anglesDesired[i] + 0.2):
-                    break
-                elif(mc.get_angles()[i] < anglesDesired[i]):
-                    tempAngles[i] += 0.1
-                    mc.sync_send_angles(tempAngles,5)
-                elif(mc.get_angles()[i] > anglesDesired[i]):
-                    tempAngles[i] -= 0.1
-                    mc.sync_send_angles(tempAngles,5)
-            
-            satisfied += 1
-    
+    prevAngles = mc.get_angles()
+    tempAngles = anglesDesired.copy()
+    for i in range(6):
+        while not(anglesDesired[i] - 0.05 < mc.get_angles()[i] < anglesDesired[i] + 0.05):
+            #print(f"{'anglesDesired[i] ='} {anglesDesired[i]} {'i ='} {i} {', tempAngles[i] ='} {tempAngles[i]} {', currentAngle ='} {mc.get_angles()[i]}")
+            if(mc.get_angles()[i] < anglesDesired[i]):
+                tempAngles[i] += 0.025
+            else:
+                tempAngles[i] -= 0.025
+            mc.sync_send_angles(tempAngles,1)
+    print(f"{'prevAngles:     '} {prevAngles}")
+    print(f"{'anglesDesired:  '} {[round(num, 2) for num in anglesDesired]}")
+    print(f"{'mc.get_angles():'} {mc.get_angles()}")
 
 # anglesDesired = [90,90,90,90,90,90], mc.get_angles() = [89.8,90,90,90,90,90]
 # 89.8 < 89.8 < 90: false 
