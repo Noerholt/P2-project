@@ -99,17 +99,17 @@ def AdjustAngles(mc: MyCobot, anglesDesired: list):
     print(f"{'endAngles:'} {mc.get_angles()}")
     print(f"{'endCoords():'} {mc.get_coords()}")
 
-def ChooseSolution(mc: MyCobot, S, pillType):
-    for i in range(np.shape(S)[0]):
-        if (pillType == "A" and S[i,0] > 0 and S[i,1] > 0 and S[i,2] > 0):
-            return S[i,:]
-        elif (pillType == "B" and S[i,0] < 0 and S[i,1] < 0 and S[i,2] < 0):
-            return S[i,:]
-    for i in range(np.shape(S)[0]):
-        if (pillType == "B" and S[i,0] < 0 and S[i,1] > 0 and S[i,2] > 0):
-            return S[i,:]
-        elif (pillType == "A" and S[i,0] > 0 and S[i,1] > 0 and S[i,2] > 0):
-            return S[i,:]    
+def ChooseSolution(mc: MyCobot, S, solType):
+    for solCount in range(np.shape(S)[0], 0, -1):
+        for i in range(np.shape(S)[0]):
+            if (solType == "P1"):
+                if (solCount == np.shape(S)[0] and S[i,0] > 0 and S[i,1] > 0 and S[i,2] > 0):
+                    return S[i,:]
+                elif (solCount == np.shape(S)[0]-1 and S[i,0] < 0 and S[i,1] > 0 and S[i,2] > 0):
+                    return S[i,:]
+
+            elif (solType == "N1" and S[i,0] < 0 and S[i,1] < 0 and S[i,2] < 0):
+                return S[i,:]    
 
 def LinearMotionA(mc: MyCobot, endAngles, steps):
     #print(f"{'endAngles      :'} {[round(num, 2) for num in endAngles]}")
