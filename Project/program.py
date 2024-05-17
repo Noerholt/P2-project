@@ -8,8 +8,8 @@ import time
 from Targets import *
 
 os.system('cls')
-mc = MyCobot("COM17", 115200) #Victor
-#mc = MyCobot("COM1", 115200) #Magnus
+#mc = MyCobot("COM17", 115200) #Victor
+mc = MyCobot("COM1", 115200) #Magnus
 
 dagPeriode = ["morgen", "middag", "aften", "nat"]
 
@@ -91,7 +91,7 @@ def runProgram(patientList):
         print(ApproachPillA.coords[0])
 
 
-#mc.sync_send_angles([0,0,0,0,0,0],25)
+mc.sync_send_angles([0,0,0,0,0,0],25)
 #
 #mc.sync_send_coords([-110,-263,130,180,0,0],20,0)
 #
@@ -120,15 +120,13 @@ def runProgram(patientList):
 #
 #time.sleep(10)
 
-#runProgram(FullList)
+runProgram(FullList)
 
-mc.sync_send_coords(ApproachPillA.coords)
+#mc.sync_send_coords(ApproachPillA.coords, 25)
 
-move_perfect_line2(ApproachPillA.coords, viapoint.coords)
+#move_perfect_line2(mc,ApproachPillA.coords, viapoint.coords)
 
-def IK_send_coords(coords, speed):
-
-    x,y,z,Rx,Ry,Rz = coords 
+def IK_send_coords(coords, speed): 
 
     T = TransformDesired(coords)
 

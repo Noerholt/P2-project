@@ -1,5 +1,6 @@
 import math as m
 import numpy as np
+import time
 from pymycobot.mycobot import MyCobot
 
 def ToDeg(input):
@@ -86,7 +87,6 @@ def PrintAngleSolution(S):
     print(np.array2string(S*180/m.pi, formatter={'float_kind': PrintFunction}))
 
 def AdjustAngles(mc: MyCobot, anglesDesired: list):
-    prevAngles = mc.get_angles()
     tempAngles = anglesDesired.copy()
     for i in range(6):
         while not(anglesDesired[i] - 0.05 < mc.get_angles()[i] < anglesDesired[i] + 0.05):
@@ -95,38 +95,84 @@ def AdjustAngles(mc: MyCobot, anglesDesired: list):
             else:
                 tempAngles[i] -= 0.05
             mc.sync_send_angles(tempAngles,4)
-    print(f"{'prevAngles:     '} {prevAngles}")
-    print(f"{'anglesDesired:  '} {[round(num, 2) for num in anglesDesired]}")
-    print(f"{'mc.get_angles():'} {mc.get_angles()}")
-    print(f"{'mc.get_coords():'} {mc.get_coords()}")
-    print(f"{'tempAngles:     '} {[round(num, 2) for num in tempAngles]}")
+    
+    print(f"{'endAngles:'} {mc.get_angles()}")
+    print(f"{'endCoords():'} {mc.get_coords()}")
 
+def ChooseSolution(mc: MyCobot, S, pillType):
+    for i in range(np.shape(S)[0]):
+        if (pillType == "A" and S[i,0] > 0 and S[i,1] > 0 and S[i,2] > 0):
+            return S[i,:]
+        elif (pillType == "B" and S[i,0] < 0 and S[i,1] < 0 and S[i,2] < 0):
+            return S[i,:]
+    for i in range(np.shape(S)[0]):
+        if (pillType == "B" and S[i,0] < 0 and S[i,1] > 0 and S[i,2] > 0):
+            return S[i,:]
+        elif (pillType == "A" and S[i,0] > 0 and S[i,1] > 0 and S[i,2] > 0):
+            return S[i,:]    
 
-def move_perfect_line2(mc: MyCobot, startEuler, endEuler):
+def LinearMotionA(mc: MyCobot, endAngles, steps):
+    #print(f"{'endAngles      :'} {[round(num, 2) for num in endAngles]}")
+    #print(f"{'mc.get_angles():'} {[round(num, 2) for num in mc.get_angles()]}")
+    startAngles = mc.get_angles()
+    angleDifference = endAngles - startAngles
+    stepLengths = [0,0,0,0,0,0]
 
-    startPose = TransformDesired(startEuler[0],startEuler[1],startEuler[2],startEuler[3],startEuler[4],startEuler[5])
-    endPose = TransformDesired(endEuler[0],endEuler[1],endEuler[2],endEuler[3],endEuler[4],endEuler[5])
+    for i in range(6):
+        stepLengths[i] = angleDifference[i]/steps
+    #print(f"{'stepLengths    :'} {[round(num, 2) for num in stepLengths]}")
 
-    num_steps = 100
+    for i in range(1,steps+1):
+        mc.sync_send_angles([startAngles[0] + stepLengths[0]*i,startAngles[1] + stepLengths[1]*i,startAngles[2] + stepLengths[2]*i,startAngles[3] + stepLengths[3]*i,startAngles[4] + stepLengths[4]*i,startAngles[5] + stepLengths[5]*i],5)
+    
+    time.sleep(1)
+    #print(f"{'endAngles      :'} {[round(num, 2) for num in mc.get_angles()]}")
+
+def Solution(mc: MyCobot, Coords, type):
+    return ChooseSolution(mc, ToDeg(CalculateThetaValues(TransformDesired(Coords))), type)
+
+def LinearMotionP(mc: MyCobot, endPosition, steps):
+    print(f"{'endPosition:  '} {[round(num, 2) for num in endPosition]}")
+    startPosition = mc.get_coords()
+    print(f"{'startPosition:'} {[round(num, 2) for num in startPosition]}")
+    stepLengths = [0,0,0,0,0,0]
+
+    for i in range(3):
+        stepLengths[i] =  (endPosition[i] - startPosition[i])/steps
+    print(f"{'stepLengths    :'} {[round(num, 2) for num in stepLengths]}")
+
+    for i in range(1,steps+1):
+        #print(f"{'PositionChange:'} {np.array(startPosition) + np.array(stepLengths)*i}")
+        angles = ChooseSolution(mc, ToDeg(CalculateThetaValues(TransformDesired(np.array(startPosition) + np.array(stepLengths)*i))), "A")
+        angles[5] = 0
+        mc.sync_send_angles(angles,10)
+    
+    time.sleep(1)
+    print(f"{'endAngles      :'} {[round(num, 2) for num in mc.get_angles()]}")
+
+def move_perfect_line2(mc: MyCobot, startEuler: list, endEuler: list):
+
+    startPose = TransformDesired(startEuler)
+    endPose = TransformDesired(endEuler)
+
+    num_steps = 50
 
     viapointJointsDeg = [0,0,0,0,0,0]
 
     for i in range(num_steps + 1):
         viapoint_pose = startPose + (endPose - startPose) * i / num_steps
+        if (i > 20):
+            print(f"{'viapoint_pose:'} {np.round(viapoint_pose,4)}")
         
-        viapointJoints = CalculateThetaValues(viapoint_pose)
-
-        print(viapointJoints)
-
-        for i in range(5):
-
-            viapointJointsDeg[i] = viapointJoints[0,i]*180/m.pi
-
+        """
+        for j in range(5):
+            viapointJointsDeg[j] = viapointJoints[0,j]*180/m.pi
+        print(viapointJointsDeg)
+        """
         #viapointJoints2 = [viapointJoints[0,0],viapointJoints[0,1],viapointJoints[0,2],viapointJoints[0,3],viapointJoints[0,4],viapointJoints[0,5]]
         #print(viapointJointsDeg)
+        viapointJointsDeg = ChooseSolution(mc, ToDeg(CalculateThetaValues(viapoint_pose)), "A")
+        viapointJointsDeg[5] = 0
+        print(f"{'i:'} {i} {'viapointJointsDeg:'} {[round(num, 2) for num in viapointJointsDeg]}")
 
-        viapointJointsDeg[5] = 180
-
-        print(viapointJointsDeg[5])
-
-        mc.send_angles(viapointJointsDeg)
+        mc.sync_send_angles(viapointJointsDeg, 15)
