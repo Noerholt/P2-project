@@ -122,16 +122,12 @@ def runProgram(patientList):
 
 runProgram(FullList)
 
+def IK_send_coords(coords, speed):
 
+    x,y,z,Rx,Ry,Rz = coords 
 
-#T = TransformDesired(-100,-250,130,180,0,0)
-#S = toDeg(CalculateThetaValues(T))
-#
-#mc.sync_send_angles([S[0,0],S[0,1],S[0,2],S[0,3],S[0,4],S[0,5]],25)
-#
-#time.sleep(2)
-#print(f"{"coords = "} {mc.get_coords()} {", angles ="} {mc.get_angles()}")
-#
-#AdjustAngles(mc, S[0,:])
-#time.sleep(2)
-#print(f"{"coords = "} {mc.get_coords()} {", angles ="} {mc.get_angles()}")
+    T = TransformDesired(coords)
+
+    angles = CalculateThetaValues(T)
+
+    mc.send_angles(angles[0])
