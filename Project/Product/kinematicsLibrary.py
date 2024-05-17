@@ -86,7 +86,6 @@ def PrintAngleSolution(S):
     print(np.array2string(S*180/m.pi, formatter={'float_kind': PrintFunction}))
 
 def AdjustAngles(mc: MyCobot, anglesDesired: list):
-    satisfied = 0
     prevAngles = mc.get_angles()
     tempAngles = anglesDesired.copy()
     for i in range(6):
@@ -100,15 +99,5 @@ def AdjustAngles(mc: MyCobot, anglesDesired: list):
     print(f"{'prevAngles:     '} {prevAngles}")
     print(f"{'anglesDesired:  '} {[round(num, 2) for num in anglesDesired]}")
     print(f"{'mc.get_angles():'} {mc.get_angles()}")
+    print(f"{'mc.get_angles():'} {mc.get_coords()}")
     print(f"{'tempAngles:     '} {[round(num, 2) for num in tempAngles]}")
-
-# anglesDesired = [90,90,90,90,90,90], mc.get_angles() = [89.8,90,90,90,90,90]
-# 89.8 < 89.8 < 90: false 
-# 90 < 89.8 < 90.2: false
-# tempAngles = [90.1,90,90,90,90,90]
-
-# anglesDesired = [89,90,90,90,90,90], mc.get_angles() = [90,90,90,90,90,90]
-# 88.8 < 90 < 89 false
-# 89 < 90 < 89.2 false
-
-# tempAngles = [89.1,90,90,90,90,90]
