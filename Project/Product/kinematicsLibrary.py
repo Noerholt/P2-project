@@ -102,3 +102,32 @@ def AdjustAngles(mc: MyCobot, anglesDesired: list):
     print(f"{'mc.get_coords():'} {mc.get_coords()}")
     print(f"{'tempAngles:     '} {[round(num, 2) for num in tempAngles]}")
 
+
+def move_perfect_line2(mc: MyCobot, startEuler, endEuler):
+
+    startPose = TransformDesired(startEuler[0],startEuler[1],startEuler[2],startEuler[3],startEuler[4],startEuler[5])
+    endPose = TransformDesired(endEuler[0],endEuler[1],endEuler[2],endEuler[3],endEuler[4],endEuler[5])
+
+    num_steps = 100
+
+    viapointJointsDeg = [0,0,0,0,0,0]
+
+    for i in range(num_steps + 1):
+        viapoint_pose = startPose + (endPose - startPose) * i / num_steps
+        
+        viapointJoints = CalculateThetaValues(viapoint_pose)
+
+        print(viapointJoints)
+
+        for i in range(5):
+
+            viapointJointsDeg[i] = viapointJoints[0,i]*180/m.pi
+
+        #viapointJoints2 = [viapointJoints[0,0],viapointJoints[0,1],viapointJoints[0,2],viapointJoints[0,3],viapointJoints[0,4],viapointJoints[0,5]]
+        #print(viapointJointsDeg)
+
+        viapointJointsDeg[5] = 180
+
+        print(viapointJointsDeg[5])
+
+        mc.send_angles(viapointJointsDeg)
