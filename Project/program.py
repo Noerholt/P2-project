@@ -80,10 +80,10 @@ def runProgram(patientList):
             mc.sync_send_coords(viapoint.coords,25,1, 1)
     
         ApproachPillA.update_single_coord(0,ApproachPillA.coords[0]-50)
-        ApproachPillB.update_single_coord(0,ApproachPillB.coords[0]-50)
+        ApproachPillB.update_single_coord(0,ApproachPillB.coords[0]+50)
         ApproachPillA.update_single_coord(1,-215)
         ApproachPillB.update_single_coord(1,-215)
-        PickPillA.update_single_coord(0,PickPillA.coords[0]+50)
+        PickPillA.update_single_coord(0,PickPillA.coords[0]-50)
         PickPillB.update_single_coord(0,PickPillB.coords[0]+50)
         PickPillA.update_single_coord(1,-215)
         PickPillB.update_single_coord(1,-215)
