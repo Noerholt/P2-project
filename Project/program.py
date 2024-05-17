@@ -120,7 +120,11 @@ def runProgram(patientList):
 #
 #time.sleep(10)
 
-runProgram(FullList)
+#runProgram(FullList)
+
+mc.send_coords(ApproachPillA.coords)
+
+move_perfect_line2(ApproachPillA.coords, viapoint.coords)
 
 def IK_send_coords(coords, speed):
 
