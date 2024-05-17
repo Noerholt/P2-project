@@ -8,7 +8,9 @@ os.system('cls')
 mc = MyCobot("COM1", 115200)
 mc.sync_send_angles([0,0,0,0,0,0],30)
 
-T = TransformDesired(-55,-215,70,-180,0,0)
+l = [-55,-215,70,-180,0,0]
+
+T = TransformDesired(l)
 S = CalculateThetaValues(T)
 #PrintAngleSolution(S)
 anglesDesired = []
