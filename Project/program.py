@@ -122,7 +122,7 @@ def runProgram(patientList):
 
 #runProgram(FullList)
 
-mc.send_coords(ApproachPillA.coords)
+mc.sync_send_coords(ApproachPillA.coords)
 
 move_perfect_line2(ApproachPillA.coords, viapoint.coords)
 
