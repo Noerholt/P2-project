@@ -5,16 +5,16 @@ from pymycobot.mycobot import MyCobot
 def ToDeg(input):
     return input*180/m.pi
 
-def TransformDesired(x,y,z,Rx,Ry,Rz):
-    return np.matrix([[m.cos((m.pi*Ry)/180)*m.cos((m.pi*Rz)/180), m.cos((m.pi*Rz)/180)*m.sin((m.pi*Rx)/180)*m.sin((m.pi*Ry)/180) - m.cos((m.pi*Rx)/180)*m.sin((m.pi*Rz)/180), m.sin((m.pi*Rx)/180)*m.sin((m.pi*Rz)/180) + m.cos((m.pi*Rx)/180)*m.cos((m.pi*Rz)/180)*m.sin((m.pi*Ry)/180), x],
-                    [m.cos((m.pi*Ry)/180)*m.sin((m.pi*Rz)/180), m.cos((m.pi*Rx)/180)*m.cos((m.pi*Rz)/180) + m.sin((m.pi*Rx)/180)*m.sin((m.pi*Ry)/180)*m.sin((m.pi*Rz)/180), m.cos((m.pi*Rx)/180)*m.sin((m.pi*Ry)/180)*m.sin((m.pi*Rz)/180) - m.cos((m.pi*Rz)/180)*m.sin((m.pi*Rx)/180), y],
-                    [                    -m.sin((m.pi*Ry)/180),                                                                  m.cos((m.pi*Ry)/180)*m.sin((m.pi*Rx)/180),                                                                  m.cos((m.pi*Rx)/180)*m.cos((m.pi*Ry)/180), z],
+def TransformDesired(Coords):
+    return np.matrix([[m.cos((m.pi*Coords[4])/180)*m.cos((m.pi*Coords[5])/180), m.cos((m.pi*Coords[5])/180)*m.sin((m.pi*Coords[3])/180)*m.sin((m.pi*Coords[4])/180) - m.cos((m.pi*Coords[3])/180)*m.sin((m.pi*Coords[5])/180), m.sin((m.pi*Coords[3])/180)*m.sin((m.pi*Coords[5])/180) + m.cos((m.pi*Coords[3])/180)*m.cos((m.pi*Coords[5])/180)*m.sin((m.pi*Coords[4])/180),Coords[0]],
+                    [m.cos((m.pi*Coords[4])/180)*m.sin((m.pi*Coords[5])/180), m.cos((m.pi*Coords[3])/180)*m.cos((m.pi*Coords[5])/180) + m.sin((m.pi*Coords[3])/180)*m.sin((m.pi*Coords[4])/180)*m.sin((m.pi*Coords[5])/180), m.cos((m.pi*Coords[3])/180)*m.sin((m.pi*Coords[4])/180)*m.sin((m.pi*Coords[5])/180) - m.cos((m.pi*Coords[5])/180)*m.sin((m.pi*Coords[3])/180), Coords[1]],
+                    [                    -m.sin((m.pi*Coords[4])/180),                                                                  m.cos((m.pi*Coords[4])/180)*m.sin((m.pi*Coords[3])/180),                                                                  m.cos((m.pi*Coords[3])/180)*m.cos((m.pi*Coords[4])/180), Coords[2]],
                     [                                        0,                                                                                                          0,                                                                                                          0, 1]])
 
 def CalculateThetaValues(T):
     #Theta1
-    v1a = m.pi/2+m.atan2(T[1,3]-(65.5+42)*T[1,2],T[0,3]-(65.5+42)*T[0,2])+m.acos(88.78/m.sqrt((T[0,3]-(65.5+42)*T[0,2])**2+(T[1,3]-(65.5+42)*T[1,2])**2))
-    v1b = m.pi/2+m.atan2(T[1,3]-(65.5+42)*T[1,2],T[0,3]-(65.5+42)*T[0,2])-m.acos(88.78/m.sqrt((T[0,3]-(65.5+42)*T[0,2])**2+(T[1,3]-(65.5+42)*T[1,2])**2))
+    v1a = m.pi/2+m.atan2(T[1,3]-(65.5+44.5)*T[1,2],T[0,3]-(65.5+44.5)*T[0,2])+m.acos(88.78/m.sqrt((T[0,3]-(65.5+44.5)*T[0,2])**2+(T[1,3]-(65.5+44.5)*T[1,2])**2))
+    v1b = m.pi/2+m.atan2(T[1,3]-(65.5+44.5)*T[1,2],T[0,3]-(65.5+44.5)*T[0,2])-m.acos(88.78/m.sqrt((T[0,3]-(65.5+44.5)*T[0,2])**2+(T[1,3]-(65.5+44.5)*T[1,2])**2))
     S = np.array([[v1a,0,0,0,0,0],[v1b,0,0,0,0,0]])
 
     for i in range(np.shape(S)[0]-1,-1,-1):
@@ -30,7 +30,7 @@ def CalculateThetaValues(T):
     
     #Theta5
     for i in range(np.shape(S)[0]):
-        S[i,4] = m.acos((-T[1,3]*m.cos(S[i,0])+T[0,3]*m.sin(S[i,0])-88.78)/(65.5+42))
+        S[i,4] = m.acos((-T[1,3]*m.cos(S[i,0])+T[0,3]*m.sin(S[i,0])-88.78)/(65.5+44.5))
 
     S = np.vstack([S, S])
     for i in range(1,int(np.shape(S)[0]/2)+1):
@@ -42,7 +42,7 @@ def CalculateThetaValues(T):
 
     #Theta3
     for i in range(np.shape(S)[0]-1,-1,-1):
-        P4 = np.array([T[0,3]-95*T[0,0]*m.sin(S[i,5])-95*T[0,1]*m.cos(S[i,5])-(65.5+42)*T[0,2], T[1,3]-95*T[1,0]*m.sin(S[i,5])-95*T[1,1]*m.cos(S[i,5])-(65.5+42)*T[1,2], T[2,3]-95*T[2,0]*m.sin(S[i,5])-95*T[2,1]*m.cos(S[i,5])-(65.5+42)*T[2,2]])
+        P4 = np.array([T[0,3]-95*T[0,0]*m.sin(S[i,5])-95*T[0,1]*m.cos(S[i,5])-(65.5+44.5)*T[0,2], T[1,3]-95*T[1,0]*m.sin(S[i,5])-95*T[1,1]*m.cos(S[i,5])-(65.5+44.5)*T[1,2], T[2,3]-95*T[2,0]*m.sin(S[i,5])-95*T[2,1]*m.cos(S[i,5])-(65.5+44.5)*T[2,2]])
         Pl = np.array([m.sin(S[i,0])*88.78, -m.cos(S[i,0])*88.78, 173.9])
         LPlP4 = (P4[0]-Pl[0])**2+(P4[1]-Pl[1])**2+(P4[2]-Pl[2])**2
 
@@ -99,5 +99,6 @@ def AdjustAngles(mc: MyCobot, anglesDesired: list):
     print(f"{'prevAngles:     '} {prevAngles}")
     print(f"{'anglesDesired:  '} {[round(num, 2) for num in anglesDesired]}")
     print(f"{'mc.get_angles():'} {mc.get_angles()}")
-    print(f"{'mc.get_angles():'} {mc.get_coords()}")
+    print(f"{'mc.get_coords():'} {mc.get_coords()}")
     print(f"{'tempAngles:     '} {[round(num, 2) for num in tempAngles]}")
+
