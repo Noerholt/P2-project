@@ -102,15 +102,17 @@ def AdjustAngles(mc: MyCobot, anglesDesired: list):
 def ChooseSolution(mc: MyCobot, S, solType):
     for solCount in range(np.shape(S)[0], 0, -1):
         for i in range(np.shape(S)[0]):
-            if (solType == "P1"):
-                if (solCount == np.shape(S)[0] and S[i,0] > 0 and S[i,1] > 0 and S[i,2] > 0):
+            if (solType == "B"):
+                if (solCount == np.shape(S)[0] and S[i,0] >= 0 and S[i,1] >= 0 and S[i,2] >= 0):
                     return S[i,:]
-                elif (solCount == np.shape(S)[0]-1 and S[i,0] < 0 and S[i,1] > 0 and S[i,2] > 0):
+                elif (solCount == np.shape(S)[0]-1 and S[i,0] < 0 and S[i,1] >= 0 and S[i,2] >= 0):
                     return S[i,:]
-
-            elif (solType == "N1" and S[i,0] < 0 and S[i,1] < 0 and S[i,2] < 0):
-                return S[i,:]    
-
+            elif (solType == "A"):
+                if (solCount == np.shape(S)[0] and S[i,0] <= 0 and S[i,1] <= 0 and S[i,2] <= 0):
+                    return S[i,:]
+                elif (solCount == np.shape(S)[0]-1 and S[i,0] < 0 and S[i,1] >= 0 and S[i,2] >= 0):
+                    return S[i,:]
+                 
 def LinearMotionA(mc: MyCobot, endAngles, steps):
     #print(f"{'endAngles      :'} {[round(num, 2) for num in endAngles]}")
     #print(f"{'mc.get_angles():'} {[round(num, 2) for num in mc.get_angles()]}")
@@ -128,9 +130,54 @@ def LinearMotionA(mc: MyCobot, endAngles, steps):
     time.sleep(1)
     #print(f"{'endAngles      :'} {[round(num, 2) for num in mc.get_angles()]}")
 
-def Solution(mc: MyCobot, Coords, type):
-    return ChooseSolution(mc, ToDeg(CalculateThetaValues(TransformDesired(Coords))), type)
+def Solution(mc: MyCobot, Coords, solType):
+    return ChooseSolution(mc, ToDeg(CalculateThetaValues(TransformDesired(Coords))), solType)
 
+def SwitchColor(mc: MyCobot,r,g,b):
+    time.sleep(1)
+    for i in range(10):
+        mc.set_color(r,g,b)
+    
+def SortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
+    aim = targetPosition.copy()
+    mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
+    aim[2] = -6; 
+    LinearMotionA(mc, Solution(mc, aim, uniquePill), 90)
+    SwitchColor(mc,0,255,0)
+    time.sleep(1)
+    aim = targetPosition.copy()
+    LinearMotionA(mc, Solution(mc, aim, uniquePill), 90)
+    aim = dispenserPosition.copy() 
+    aim[2] = 25; 
+    mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
+    #aim[2] = 25; 
+    #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
+    SwitchColor(mc,255,0,0)
+    time.sleep(4)
+    #aim = dispenserPosition.copy()
+    #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
+
+def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions):
+    uniquePills = sorted(set([char for sublist in pillList for char in sublist]))
+    for uniquePill in uniquePills:
+        if ([char for sublist in pillList for char in sublist].count(uniquePill) > 9):
+            print(f"{'Request amount for pill:'} {uniquePill} {', beyond amount in storage'}")
+            continue
+        
+        pillsSorted = 0
+        for i in range(4):
+            for j in range(pillList[i].count(uniquePill)):
+                targetPosition = targetPositions[uniquePill].copy()
+                if (uniquePill == 'A'):
+                    targetPosition[0] -= 50*(pillsSorted % 3)
+                    targetPosition[1] -= 50*(m.floor(pillsSorted/3))
+                else:
+                    targetPosition[0] += 52.5*(pillsSorted % 3)
+                    targetPosition[1] -= 50*(m.floor(pillsSorted/3))
+                SortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
+                pillsSorted += 1
+        #Add cleaning
+                
 def LinearMotionP(mc: MyCobot, endPosition, steps):
     print(f"{'endPosition:  '} {[round(num, 2) for num in endPosition]}")
     startPosition = mc.get_coords()

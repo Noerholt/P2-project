@@ -1,6 +1,6 @@
 #   First take input (patinet data) then create a list of pill objects positions.
 
-from patientClass import Patient
+from Project.Extra.patientClass import Patient
 from createList import ListCreator
 
 

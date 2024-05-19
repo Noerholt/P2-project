@@ -5,7 +5,7 @@ from Product.kinematicsLibrary import *
 
 from pymycobot import PI_PORT, PI_BAUD
 import time
-from Targets import *
+from Project.Product.Targets import *
 
 os.system('cls')
 #mc = MyCobot("COM17", 115200) #Victor
