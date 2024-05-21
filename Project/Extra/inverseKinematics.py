@@ -1,6 +1,6 @@
 import os
 import time
-from Product.kinematicsLibrary import *
+from Project.Product.kinematicsLibrary import *
 from pymycobot.mycobot import MyCobot
 from pymycobot import PI_PORT, PI_BAUD
 

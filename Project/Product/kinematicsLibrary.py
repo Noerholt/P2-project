@@ -113,22 +113,34 @@ def ChooseSolution(mc: MyCobot, S, solType):
                 elif (solCount == np.shape(S)[0]-1 and S[i,0] < 0 and S[i,1] >= 0 and S[i,2] >= 0):
                     return S[i,:]
                  
+def LinearMotionP(mc: MyCobot, endPosition, steps, solType):
+    print(f"{'endPosition:       '} {[round(num, 2) for num in endPosition]}")
+    startPosition = mc.get_coords()
+    print(f"{'startPosition:     '} {[round(num, 2) for num in startPosition]}")
+    stepLengths = [0,0,0,0,0,0]
+
+    for i in range(3):
+        stepLengths[i] =  (endPosition[i] - startPosition[i])/steps
+    #print(f"{'stepLengths:       '} {[round(num, 2) for num in stepLengths]}")
+
+    for i in range(1,steps+1):
+        #print(f"{'positionChange:'} {np.array(startPosition) + np.array(stepLengths)*i}")
+        #angles = ChooseSolution(mc, ToDeg(CalculateThetaValues(TransformDesired(np.array(startPosition) + np.array(stepLengths)*i))), "A")
+        angles = Solution(mc, np.array(startPosition) + np.array(stepLengths)*i, solType)
+        mc.sync_send_angles(angles,10)
+
+    print(f"{'endPosition:       '} {[round(num, 2) for num in mc.get_coords()]}")
+
 def LinearMotionA(mc: MyCobot, endAngles, steps):
-    #print(f"{'endAngles      :'} {[round(num, 2) for num in endAngles]}")
-    #print(f"{'mc.get_angles():'} {[round(num, 2) for num in mc.get_angles()]}")
     startAngles = mc.get_angles()
     angleDifference = endAngles - startAngles
     stepLengths = [0,0,0,0,0,0]
 
     for i in range(6):
         stepLengths[i] = angleDifference[i]/steps
-    #print(f"{'stepLengths    :'} {[round(num, 2) for num in stepLengths]}")
 
     for i in range(1,steps+1):
         mc.sync_send_angles([startAngles[0] + stepLengths[0]*i,startAngles[1] + stepLengths[1]*i,startAngles[2] + stepLengths[2]*i,startAngles[3] + stepLengths[3]*i,startAngles[4] + stepLengths[4]*i,startAngles[5] + stepLengths[5]*i],5)
-    
-    time.sleep(1)
-    #print(f"{'endAngles      :'} {[round(num, 2) for num in mc.get_angles()]}")
 
 def Solution(mc: MyCobot, Coords, solType):
     return ChooseSolution(mc, ToDeg(CalculateThetaValues(TransformDesired(Coords))), solType)
@@ -138,7 +150,7 @@ def SwitchColor(mc: MyCobot,r,g,b):
     for i in range(10):
         mc.set_color(r,g,b)
     
-def SortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
+def SortPillA(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
     aim = targetPosition.copy()
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
     aim[2] = -6; 
@@ -147,6 +159,25 @@ def SortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
     time.sleep(1)
     aim = targetPosition.copy()
     LinearMotionA(mc, Solution(mc, aim, uniquePill), 90)
+    aim = dispenserPosition.copy() 
+    aim[2] = 25; 
+    mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
+    #aim[2] = 25; 
+    #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
+    SwitchColor(mc,255,0,0)
+    time.sleep(4)
+    #aim = dispenserPosition.copy()
+    #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
+
+def SortPillP(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
+    aim = targetPosition.copy()
+    mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
+    aim[2] = -6; 
+    LinearMotionP(mc, Solution(mc, aim, uniquePill), 90, uniquePill)
+    SwitchColor(mc,0,255,0)
+    time.sleep(1)
+    aim = targetPosition.copy()
+    LinearMotionP(mc, Solution(mc, aim, uniquePill), 90, uniquePill)
     aim = dispenserPosition.copy() 
     aim[2] = 25; 
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
@@ -174,28 +205,10 @@ def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions):
                 else:
                     targetPosition[0] += 52.5*(pillsSorted % 3)
                     targetPosition[1] -= 50*(m.floor(pillsSorted/3))
-                SortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
+                #SortPillA(mc, uniquePill, targetPosition, dispenserPositions[i])
+                SortPillP(mc, uniquePill, targetPosition, dispenserPositions[i])
                 pillsSorted += 1
         #Add cleaning
-                
-def LinearMotionP(mc: MyCobot, endPosition, steps):
-    print(f"{'endPosition:  '} {[round(num, 2) for num in endPosition]}")
-    startPosition = mc.get_coords()
-    print(f"{'startPosition:'} {[round(num, 2) for num in startPosition]}")
-    stepLengths = [0,0,0,0,0,0]
-
-    for i in range(3):
-        stepLengths[i] =  (endPosition[i] - startPosition[i])/steps
-    print(f"{'stepLengths    :'} {[round(num, 2) for num in stepLengths]}")
-
-    for i in range(1,steps+1):
-        #print(f"{'PositionChange:'} {np.array(startPosition) + np.array(stepLengths)*i}")
-        angles = ChooseSolution(mc, ToDeg(CalculateThetaValues(TransformDesired(np.array(startPosition) + np.array(stepLengths)*i))), "A")
-        angles[5] = 0
-        mc.sync_send_angles(angles,10)
-    
-    time.sleep(1)
-    print(f"{'endAngles      :'} {[round(num, 2) for num in mc.get_angles()]}")
 
 def move_perfect_line2(mc: MyCobot, startEuler: list, endEuler: list):
 
