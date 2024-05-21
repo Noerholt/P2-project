@@ -22,5 +22,5 @@ List5 =[["A"],["A"],["A"],["A"]]
 targetPositions = {'A': ApproachPillA.coords, 'B': ApproachPillB.coords}
 dispenserPositions = [MorningApproach.coords, AfternoonApproach.coords, EveningApproach.coords, NightApproach.coords]
 
-ProcessList(mc, List1, targetPositions, dispenserPositions)
+ProcessList(mc, List4, targetPositions, dispenserPositions)
 mc.sync_send_angles(home.coords,30)

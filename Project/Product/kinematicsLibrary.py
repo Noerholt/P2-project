@@ -116,12 +116,13 @@ def ChooseSolution(mc: MyCobot, S, solType):
 def LinearMotionP(mc: MyCobot, endPosition, steps, solType):
     print(f"{'endPosition:       '} {[round(num, 2) for num in endPosition]}")
     startPosition = mc.get_coords()
+    startPosition[5] = endPosition[5]
     print(f"{'startPosition:     '} {[round(num, 2) for num in startPosition]}")
     stepLengths = [0,0,0,0,0,0]
 
     for i in range(3):
         stepLengths[i] =  (endPosition[i] - startPosition[i])/steps
-    #print(f"{'stepLengths:       '} {[round(num, 2) for num in stepLengths]}")
+    print(f"{'stepLengths:       '} {[round(num, 2) for num in stepLengths]}")
 
     for i in range(1,steps+1):
         #print(f"{'positionChange:'} {np.array(startPosition) + np.array(stepLengths)*i}")
@@ -150,7 +151,7 @@ def SwitchColor(mc: MyCobot,r,g,b):
     for i in range(10):
         mc.set_color(r,g,b)
     
-def SortPillA(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
+def ASortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
     aim = targetPosition.copy()
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
     aim[2] = -6; 
@@ -169,15 +170,15 @@ def SortPillA(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
     #aim = dispenserPosition.copy()
     #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
 
-def SortPillP(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
+def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
     aim = targetPosition.copy()
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
-    aim[2] = -6; 
-    LinearMotionP(mc, Solution(mc, aim, uniquePill), 90, uniquePill)
+    aim[2] = 0; 
+    LinearMotionP(mc, aim, 90, uniquePill)
     SwitchColor(mc,0,255,0)
     time.sleep(1)
     aim = targetPosition.copy()
-    LinearMotionP(mc, Solution(mc, aim, uniquePill), 90, uniquePill)
+    LinearMotionP(mc, aim, 90, uniquePill)
     aim = dispenserPosition.copy() 
     aim[2] = 25; 
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
@@ -205,8 +206,8 @@ def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions):
                 else:
                     targetPosition[0] += 52.5*(pillsSorted % 3)
                     targetPosition[1] -= 50*(m.floor(pillsSorted/3))
-                #SortPillA(mc, uniquePill, targetPosition, dispenserPositions[i])
-                SortPillP(mc, uniquePill, targetPosition, dispenserPositions[i])
+                #ASortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
+                PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
                 pillsSorted += 1
         #Add cleaning
 
