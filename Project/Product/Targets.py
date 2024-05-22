@@ -39,7 +39,7 @@ ApproachPillA = targets([-55,-210,50,-180,0,0])
 
 PickPillA = targets([-55,-215,41,-180,0,0])
 
-ApproachPillB = targets([50,-210,50,-180,0,0])
+ApproachPillB = targets([55,-210,50,-180,0,0])
 
 PickPillB = targets([55,-215,37,-180,0,90])
 

@@ -6,7 +6,7 @@ from pymycobot.mycobot import MyCobot
 from pymycobot import PI_PORT, PI_BAUD
 
 os.system('cls')
-mc = MyCobot("COM3", 115200)
+mc = MyCobot("COM17", 115200)
 mc.power_on()
 mc.sync_send_angles(home.coords,30)
 time.sleep(1)
