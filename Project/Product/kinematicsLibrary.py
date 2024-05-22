@@ -220,8 +220,8 @@ def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions, PLis
                 else:
                     targetPosition[0] += 52.5*(pillsSorted % 3)
                     targetPosition[1] -= 50*(m.floor(pillsSorted/3))
-                ASortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
-                #PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i], pillsSorted, PList)
+                #ASortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
+                PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i], pillsSorted, PList)
                 pillsSorted += 1
         #Add cleaning
 
