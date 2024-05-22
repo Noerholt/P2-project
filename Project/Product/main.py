@@ -5,8 +5,11 @@ from Targets import *
 from pymycobot.mycobot import MyCobot
 from pymycobot import PI_PORT, PI_BAUD
 
+targetPositions = {'A': ApproachPillA.coords, 'B': ApproachPillB.coords}
+dispenserPositions = [MorningApproach.coords, AfternoonApproach.coords, EveningApproach.coords, NightApproach.coords]
+
 os.system('cls')
-mc = MyCobot("COM17", 115200)
+mc = MyCobot("COM1", 115200)
 mc.power_on()
 mc.sync_send_angles(home.coords,30)
 time.sleep(1)
@@ -20,8 +23,18 @@ List4 =[["A","B"],["A","B"],["A","B"],["A","B"]]
 List5 =[["A"],["A"],["A"],["A"]]
 List6 =[["A","A","A","B","B",],["A","A","B","B","B"],["B","B","A","A"],["B","B","A","A"]]
 
-targetPositions = {'A': ApproachPillA.coords, 'B': ApproachPillB.coords}
-dispenserPositions = [MorningApproach.coords, AfternoonApproach.coords, EveningApproach.coords, NightApproach.coords]
+PList = []
+for i in range(18):
+    PList.append([])
 
+for i in range(1):
+    ProcessList(mc, List1, targetPositions, dispenserPositions, PList)
+
+for list in PList:
+    print(f"{'List'}{PList.index(list)}{': '}{list}")
+
+<<<<<<< HEAD
 ProcessList(mc, List6, targetPositions, dispenserPositions)
+=======
+>>>>>>> a9607e1f5df775721f729d0e8515890315daa1e2
 mc.sync_send_angles(home.coords,30)
