@@ -114,15 +114,16 @@ def ChooseSolution(mc: MyCobot, S, solType):
                     return S[i,:]
                  
 def LinearMotionP(mc: MyCobot, endPosition, steps, solType):
-    print(f"{'endPosition:       '} {[round(num, 2) for num in endPosition]}")
+    #print(f"{'endPosition:       '} {[round(num, 2) for num in endPosition]}")
     startPosition = mc.get_coords()
+    startPosition[2] -= 44.5
     startPosition[5] = endPosition[5]
-    print(f"{'startPosition:     '} {[round(num, 2) for num in startPosition]}")
+    #print(f"{'startPosition:     '} {[round(num, 2) for num in startPosition]}")
     stepLengths = [0,0,0,0,0,0]
 
     for i in range(3):
         stepLengths[i] =  (endPosition[i] - startPosition[i])/steps
-    print(f"{'stepLengths:       '} {[round(num, 2) for num in stepLengths]}")
+    #print(f"{'stepLengths:       '} {[round(num, 2) for num in stepLengths]}")
 
     for i in range(1,steps+1):
         #print(f"{'positionChange:'} {np.array(startPosition) + np.array(stepLengths)*i}")
@@ -130,7 +131,7 @@ def LinearMotionP(mc: MyCobot, endPosition, steps, solType):
         angles = Solution(mc, np.array(startPosition) + np.array(stepLengths)*i, solType)
         mc.sync_send_angles(angles,10)
 
-    print(f"{'endPosition:       '} {[round(num, 2) for num in mc.get_coords()]}")
+    #print(f"{'endPosition:       '} {[round(num, 2) for num in mc.get_coords()]}")
 
 def LinearMotionA(mc: MyCobot, endAngles, steps):
     startAngles = mc.get_angles()
@@ -160,15 +161,14 @@ def ASortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
     time.sleep(1)
     aim = targetPosition.copy()
     LinearMotionA(mc, Solution(mc, aim, uniquePill), 90)
-    aim = dispenserPosition.copy() 
-    aim[2] = 25; 
+    aim = dispenserPosition.copy()
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
-    #aim[2] = 25; 
-    #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
+    aim[2] = 25; 
+    LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
     SwitchColor(mc,255,0,0)
     time.sleep(4)
-    #aim = dispenserPosition.copy()
-    #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
+    aim = dispenserPosition.copy()
+    LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
 
 def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsSorted, PList):
     aim = targetPosition.copy()

@@ -9,7 +9,7 @@ targetPositions = {'A': ApproachPillA.coords, 'B': ApproachPillB.coords}
 dispenserPositions = [MorningApproach.coords, AfternoonApproach.coords, EveningApproach.coords, NightApproach.coords]
 
 os.system('cls')
-mc = MyCobot("COM1", 115200)
+mc = MyCobot("COM17", 115200)
 mc.power_on()
 mc.sync_send_angles(home.coords,30)
 time.sleep(1)
@@ -21,6 +21,7 @@ List2 =[["A","A","A","A","A","A","A","A","A"],["B","B","B","B","B","B","B","B","
 List3 =[["A","A","A","A","A"],["B","B","B","B","B"],["A","A","A","A"],["B","B","B","B"]]
 List4 =[["A","B"],["A","B"],["A","B"],["A","B"]]
 List5 =[["A"],["A"],["A"],["A"]]
+List6 =[["A","A","A","B","B",],["A","A","B","B","B"],["B","B","A","A"],["B","B","A","A"]]
 
 PList = []
 for i in range(18):

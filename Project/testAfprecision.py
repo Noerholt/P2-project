@@ -28,23 +28,13 @@ def printGetCoords():
         
 
 mc.set_world_reference([0,0,0,0,0,0])
-
-
-mc.sync_send_angles([0,0,0,0,0,0],25)
-time.sleep(2)
-
-#mc.sync_send_angles([0,-21.8,-115,48,90,0],25)
-"""time.sleep(2)
-mc.sync_send_coords([100,-250,150,180,0,-180],25,0,timeout=3)
-#print("Position 1 = " + str(mc.get_coords()))
-printGetCoords()"""
-
-for i in range(1, 11):
-    mc.sync_send_coords([100,-250,130,180,0,-180],25,0,timeout=3)
+mc.sync_send_angles([0,0,0,0,0,0,],25)
+for i in range(1, 11): 
+    mc.sync_send_angles([0,0,0,0,0,0,],25)
     time.sleep(2)
-    print("Position 1 = " + str(mc.get_coords()))
-    
-    mc.sync_send_coords([-250,20,100,180,0,-180],25,0,timeout=3)
+    mc.sync_send_coords([100,-250,200,180,0,180],25,0,1)
     time.sleep(2)
-    print("Position 2 = " + str(mc.get_coords()))
+    mc.sync_send_coords([100,-250,176,180,0,180],25,1,2)
+    print(f"Position {i} = " + str(mc.get_coords()))
 
+mc.sync_send_angles([0,0,0,0,0,0,],25)
