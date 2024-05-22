@@ -35,7 +35,7 @@ viapoint = targets([-195,-225,130,180,0,0])
 
 #pill container targets
                         
-ApproachPillA = targets([-55,-210,50,-180,0,0])
+ApproachPillA = targets([-50,-210,50,-180,0,0])
 
 PickPillA = targets([-55,-215,41,-180,0,0])
 

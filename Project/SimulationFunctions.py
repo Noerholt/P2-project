@@ -1,7 +1,7 @@
 from robolink import *    # API to communicate with RoboDK
 from robodk import *      # basic matrix operations
 import numpy as np
-import Project.Extra.inverseKinematics as IK
+import Project.inverseKinematics as IK
 import math as m
 import Simulation
 
