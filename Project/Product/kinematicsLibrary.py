@@ -170,26 +170,35 @@ def ASortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
     #aim = dispenserPosition.copy()
     #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
 
-def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
+def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsSorted, PList):
     aim = targetPosition.copy()
+    aim[2] += 176 #Til test
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
-    aim[2] = 0; 
+    aim[2] = 176 #Til test
+    #aim[2] = 0
     LinearMotionP(mc, aim, 90, uniquePill)
     SwitchColor(mc,0,255,0)
-    time.sleep(1)
-    aim = targetPosition.copy()
-    LinearMotionP(mc, aim, 90, uniquePill)
-    aim = dispenserPosition.copy() 
-    aim[2] = 25; 
-    mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
-    #aim[2] = 25; 
-    #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
-    SwitchColor(mc,255,0,0)
-    time.sleep(4)
-    #aim = dispenserPosition.copy()
-    #LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
+    time.sleep(0.1) #Change back to 1
 
-def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions):
+    if (uniquePill == 'A'):
+        PList[pillsSorted].append([mc.get_coords()[0],mc.get_coords()[1],mc.get_coords()[2]])
+    else:
+        PList[9 + pillsSorted].append([mc.get_coords()[0],mc.get_coords()[1],mc.get_coords()[2]])
+
+    aim = targetPosition.copy()
+    aim[2] += 176 #Til test
+    LinearMotionP(mc, aim, 90, uniquePill)
+    aim = dispenserPosition.copy()
+    aim[2] += 176 #Til test
+    mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
+    aim[2] = 25 + 176; 
+    LinearMotionP(mc, aim, 50)
+    SwitchColor(mc,255,0,0)
+    time.sleep(0.1) #Change back to 4
+    aim = dispenserPosition.copy()
+    LinearMotionP(mc, aim, 50)
+
+def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions, PList):
     uniquePills = sorted(set([char for sublist in pillList for char in sublist]))
     for uniquePill in uniquePills:
         if ([char for sublist in pillList for char in sublist].count(uniquePill) > 9):
@@ -207,7 +216,7 @@ def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions):
                     targetPosition[0] += 52.5*(pillsSorted % 3)
                     targetPosition[1] -= 50*(m.floor(pillsSorted/3))
                 #ASortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
-                PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
+                PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i], pillsSorted, PList)
                 pillsSorted += 1
         #Add cleaning
 

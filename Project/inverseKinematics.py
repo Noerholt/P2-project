@@ -1,10 +1,16 @@
 import os
 import time
-from Project.Product.kinematicsLibrary import *
+from Product.kinematicsLibrary import *
 from pymycobot.mycobot import MyCobot
 from pymycobot import PI_PORT, PI_BAUD
 
 os.system('cls')
+
+T = TransformDesired([-260,-100,60,-180,0,0])
+S = CalculateThetaValues(T)
+PrintAngleSolution(S)
+
+"""
 mc = MyCobot("COM1", 115200)
 mc.power_on()
 
@@ -24,7 +30,6 @@ print(ToDeg(CalculateThetaValues(TransformDesired([-260,-15,100,-180,0,0]))))
 LinearMotionA(mc, Solution(mc, [-260,-15,20,-180,0,0], "P1"), 100)
 mc.set_color(255,0,0)
 
-"""
 time.sleep(3)
 
 S = CalculateThetaValues(TransformDesired([-105,-215,50,-180,0,0]))
