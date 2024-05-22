@@ -107,11 +107,15 @@ def ChooseSolution(mc: MyCobot, S, solType):
                     return S[i,:]
                 elif (solCount == np.shape(S)[0]-1 and S[i,0] < 0 and S[i,1] >= 0 and S[i,2] >= 0):
                     return S[i,:]
+                elif (solCount == 1):
+                    return S[0,:]
             elif (solType == "A"):
                 if (solCount == np.shape(S)[0] and S[i,0] <= 0 and S[i,1] <= 0 and S[i,2] <= 0):
                     return S[i,:]
                 elif (solCount == np.shape(S)[0]-1 and S[i,0] < 0 and S[i,1] >= 0 and S[i,2] >= 0):
                     return S[i,:]
+                elif (solCount == 1):
+                    return S[0,:]
                  
 def LinearMotionP(mc: MyCobot, endPosition, steps, solType):
     #print(f"{'endPosition:       '} {[round(num, 2) for num in endPosition]}")
@@ -129,7 +133,7 @@ def LinearMotionP(mc: MyCobot, endPosition, steps, solType):
         #print(f"{'positionChange:'} {np.array(startPosition) + np.array(stepLengths)*i}")
         #angles = ChooseSolution(mc, ToDeg(CalculateThetaValues(TransformDesired(np.array(startPosition) + np.array(stepLengths)*i))), "A")
         angles = Solution(mc, np.array(startPosition) + np.array(stepLengths)*i, solType)
-        mc.sync_send_angles(angles,10)
+        mc.sync_send_angles(angles,5)
 
     #print(f"{'endPosition:       '} {[round(num, 2) for num in mc.get_coords()]}")
 
@@ -172,13 +176,13 @@ def ASortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
 
 def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsSorted, PList):
     aim = targetPosition.copy()
-    aim[2] += 176 #Til test
+    #aim[2] += 131.5 #Til test
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
-    aim[2] = 176 #Til test
-    #aim[2] = 0
+    #aim[2] = 131.5 #Til test
+    aim[2] = -5
     LinearMotionP(mc, aim, 90, uniquePill)
     SwitchColor(mc,0,255,0)
-    time.sleep(0.1) #Change back to 1
+    time.sleep(1) #Change back to 1
 
     if (uniquePill == 'A'):
         PList[pillsSorted].append([mc.get_coords()[0],mc.get_coords()[1],mc.get_coords()[2]])
@@ -186,17 +190,18 @@ def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsS
         PList[9 + pillsSorted].append([mc.get_coords()[0],mc.get_coords()[1],mc.get_coords()[2]])
 
     aim = targetPosition.copy()
-    aim[2] += 176 #Til test
+    #aim[2] += 131.5 #Til test
     LinearMotionP(mc, aim, 90, uniquePill)
     aim = dispenserPosition.copy()
-    aim[2] += 176 #Til test
+    #aim[2] += 131.5 #Til test
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
-    aim[2] = 25 + 176 #Til test
-    LinearMotionP(mc, aim, 50)
+    aim[2] = 25 # + 131.5 #Til test
+    LinearMotionP(mc, aim, 50, uniquePill)
     SwitchColor(mc,255,0,0)
-    time.sleep(0.1) #Change back to 4
+    time.sleep(4) #Change back to 4
     aim = dispenserPosition.copy()
-    LinearMotionP(mc, aim, 50)
+    #aim[2] += 131.5 #Til test
+    LinearMotionP(mc, aim, 50, uniquePill)
 
 def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions, PList):
     uniquePills = sorted(set([char for sublist in pillList for char in sublist]))
@@ -215,8 +220,8 @@ def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions, PLis
                 else:
                     targetPosition[0] += 52.5*(pillsSorted % 3)
                     targetPosition[1] -= 50*(m.floor(pillsSorted/3))
-                #ASortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
-                PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i], pillsSorted, PList)
+                ASortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
+                #PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i], pillsSorted, PList)
                 pillsSorted += 1
         #Add cleaning
 
