@@ -1,16 +1,22 @@
 import os
 import time
-from Product.kinematicsLibrary import *
+from kinematicsLibraryCopy import *
 from pymycobot.mycobot import MyCobot
 from pymycobot import PI_PORT, PI_BAUD
 
 os.system('cls')
 
-T = TransformDesired([-260,-100,60,-180,0,0])
+T = TransformDesired([150,-100,500,90,45,45])
+print(np.round(T,2))
 S = CalculateThetaValues(T)
 PrintAngleSolution(S)
 
 """
+[     0.559882,     0.545801,     0.623405,   145.118163 ;
+      0.545801,     0.323140,    -0.773099,  -107.159011 ;
+     -0.623405,     0.773099,    -0.116978,   502.367258 ;
+      0.000000,     0.000000,     0.000000,     1.000000 ];
+
 mc = MyCobot("COM1", 115200)
 mc.power_on()
 
