@@ -33,8 +33,4 @@ for i in range(1):
 for list in PList:
     print(f"{'List'}{PList.index(list)}{': '}{list}")
 
-<<<<<<< HEAD
-ProcessList(mc, List6, targetPositions, dispenserPositions)
-=======
->>>>>>> a9607e1f5df775721f729d0e8515890315daa1e2
 mc.sync_send_angles(home.coords,30)
