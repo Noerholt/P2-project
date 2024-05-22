@@ -9,7 +9,7 @@ targetPositions = {'A': ApproachPillA.coords, 'B': ApproachPillB.coords}
 dispenserPositions = [MorningApproach.coords, AfternoonApproach.coords, EveningApproach.coords, NightApproach.coords]
 
 os.system('cls')
-mc = MyCobot("COM17", 115200)
+mc = MyCobot("COM5", 115200)
 mc.power_on()
 mc.sync_send_angles(home.coords,30)
 time.sleep(1)
@@ -27,7 +27,8 @@ PList = []
 for i in range(18):
     PList.append([])
 
-ProcessList(mc, List4, targetPositions, dispenserPositions, PList)
+for i in range(1):
+    ProcessList(mc, List1, targetPositions, dispenserPositions, PList)
 
 for list in PList:
     print(f"{'List'}{PList.index(list)}{': '}{list}")
