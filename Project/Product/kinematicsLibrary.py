@@ -174,7 +174,7 @@ def ASortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition):
     aim = dispenserPosition.copy()
     LinearMotionA(mc, Solution(mc, aim, uniquePill), 50)
 
-def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsSorted, PList):
+def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsSorted, PointList):
     aim = targetPosition.copy()
     #aim[2] += 131.5 #Til test
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
@@ -185,9 +185,9 @@ def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsS
     time.sleep(1) #Change back to 1
 
     if (uniquePill == 'A'):
-        PList[pillsSorted].append([mc.get_coords()[0],mc.get_coords()[1],mc.get_coords()[2]])
+        PointList[pillsSorted].append([mc.get_coords()[0],mc.get_coords()[1],mc.get_coords()[2]])
     else:
-        PList[9 + pillsSorted].append([mc.get_coords()[0],mc.get_coords()[1],mc.get_coords()[2]])
+        PointList[9 + pillsSorted].append([mc.get_coords()[0],mc.get_coords()[1],mc.get_coords()[2]])
 
     aim = targetPosition.copy()
     #aim[2] += 131.5 #Til test
@@ -203,7 +203,7 @@ def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsS
     #aim[2] += 131.5 #Til test
     LinearMotionP(mc, aim, 50, uniquePill)
 
-def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions, PList):
+def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions, PointList):
     uniquePills = sorted(set([char for sublist in pillList for char in sublist]))
     for uniquePill in uniquePills:
         if ([char for sublist in pillList for char in sublist].count(uniquePill) > 9):
@@ -221,7 +221,7 @@ def ProcessList(mc: MyCobot, pillList, targetPositions, dispenserPositions, PLis
                     targetPosition[0] += 52.5*(pillsSorted % 3)
                     targetPosition[1] -= 50*(m.floor(pillsSorted/3))
                 #ASortPill(mc, uniquePill, targetPosition, dispenserPositions[i])
-                PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i], pillsSorted, PList)
+                PSortPill(mc, uniquePill, targetPosition, dispenserPositions[i], pillsSorted, PointList)
                 pillsSorted += 1
         #Add cleaning
 
