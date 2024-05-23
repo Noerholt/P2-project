@@ -22,14 +22,6 @@ List4 =[["A","B"],["A","B"],["A","B"],["A","B"]]
 List5 =[["A"],["A"],["A"],["A"]]
 List6 =[["A","A","A","B","B",],["A","A","B","B","B"],["B","B","A","A"],["B","B","A","A"]]
 
-PList = []
-for i in range(18):
-    PList.append([])
-
-for i in range(1):
-    ProcessList(mc, List1, targetPositions, dispenserPositions, PList)
-
-for list in PList:
-    print(f"{'List'}{PList.index(list)}{': '}{list}")
+ProcessList(mc, List1, targetPositions, dispenserPositions)
 
 mc.sync_send_angles(home.coords,30)
