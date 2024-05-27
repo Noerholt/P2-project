@@ -1,11 +1,11 @@
-import classes
+from classes import *
 
-stationSoapTank = classes.SoapTank()
-stationWaterTank = classes.WaterTank()
-cleanerMopTank = classes.Tank()
-wasteMopTank = classes.Tank()
+stationSoapTank = SoapTank()
+stationWaterTank = WaterTank()
+cleanerMopTank = Tank()
+wasteMopTank = Tank()
 
-dehumidifier=classe.DeHumidifier()
+dehumidifier = DeHumidifier()
 
 humidity=80 #relative himidity from 0-100%
 filterRate=20 #the rate which the filter lets water through
