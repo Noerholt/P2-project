@@ -59,7 +59,7 @@ def CalculateThetaValues(T):
 
         va = m.atan2(zPlP4_0,xPlP4_0)
         vb = m.acos((3825+LPlP4)/(270*m.sqrt(LPlP4)))
-
+        
         S[i,1] = va - vb - m.pi/2
         S = np.vstack([S, S[i,:]])
         S[i,2] = -S[i,2]

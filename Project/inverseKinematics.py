@@ -6,9 +6,14 @@ from pymycobot import PI_PORT, PI_BAUD
 
 os.system('cls')
 
-T = TransformDesired([150,-100,500,90,45,45])
-print(np.round(T,2))
-S = CalculateThetaValues(T)
+T1 = TransformDesired([150,-100,500,90,45,45])
+T2 = TransformDesired([-200,-150,455,100,-40,-15])
+T3 = TransformDesired([-350,-88.78,239.4,0,0,90])
+T4 = TransformDesired([100,-250,176,-180,0,0])
+
+np.set_printoptions(suppress=True, precision=6)
+print(np.round(T4,6))
+S = CalculateThetaValues(T4)
 PrintAngleSolution(S)
 
 """
