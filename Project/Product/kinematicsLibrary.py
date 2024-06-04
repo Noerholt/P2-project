@@ -179,7 +179,7 @@ def PSortPill(mc: MyCobot, uniquePill, targetPosition, dispenserPosition, pillsS
     #aim[2] += 131.5 #Til test
     mc.sync_send_angles(Solution(mc, aim, uniquePill), 50)
     #aim[2] = 131.5 #Til test
-    aim[2] = -5
+    aim[2] = -7
     LinearMotionP(mc, aim, 90, uniquePill)
     SwitchColor(mc,0,255,0)
     time.sleep(1) #Change back to 1
