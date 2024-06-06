@@ -5,7 +5,7 @@ from Product.kinematicsLibrary import *
 
 from pymycobot import PI_PORT, PI_BAUD
 import time
-from Project.Product.Targets import *
+from Product.Targets import *
 
 os.system('cls')
 #mc = MyCobot("COM17", 115200) #Victor
@@ -120,7 +120,7 @@ mc.sync_send_angles([0,0,0,0,0,0],25)
 #
 #time.sleep(10)
 
-runProgram(FullList)
+#runProgram(FullList)
 
 #mc.sync_send_coords(ApproachPillA.coords, 25)
 
@@ -133,3 +133,4 @@ def IK_send_coords(coords, speed):
     angles = CalculateThetaValues(T)
 
     mc.send_angles(angles[0])
+

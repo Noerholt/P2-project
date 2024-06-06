@@ -238,3 +238,4 @@ def move_perfect_line2(mc: MyCobot, startEuler: list, endEuler: list):
         print(f"{'i:'} {i} {'viapointJointsDeg:'} {[round(num, 2) for num in viapointJointsDeg]}")
 
         mc.sync_send_angles(viapointJointsDeg, 15)
+        
